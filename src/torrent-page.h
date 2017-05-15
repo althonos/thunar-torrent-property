@@ -2,6 +2,7 @@
 #define __TORRENT_PAGE_H__
 
 #include <thunarx/thunarx.h>
+#include "torrent-info.h"
 
 G_BEGIN_DECLS;
 
@@ -25,6 +26,7 @@ static void torrent_page_get_property (GObject *object, guint prop_id, GValue *v
 static void torrent_page_set_property (
     GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec
 );
+static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo* info);
 
 G_END_DECLS;
 

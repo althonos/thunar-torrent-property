@@ -1,5 +1,8 @@
 #include <gtk/gtk.h>
+#include <thunarx/thunarx.h>
+
 #include "torrent-page.h"
+#include "torrent-info.h"
 
 
 /* Property identifiers */
@@ -11,26 +14,19 @@ enum {
 
 struct _TorrentPage {
   ThunarxPropertyPage __parent__;
-  ThunarxFileInfo    *file;
+  ThunarxFileInfo     *file;
+  TorrentInfo         *info;
 
-  GtkWidget          *cb_share_folder;
-  GtkWidget          *entry_share_name;
-  GtkWidget          *cb_share_write;
-  GtkWidget          *entry_share_comments;
-  GtkWidget          *label_comments;
-  GtkWidget          *label_name;
-  GtkWidget          *button_apply;
-  GtkWidget          *cb_share_guest;
-  GtkWidget          *label_status;
+  GtkWidget           *container_vbox;
 
-  /* Default values for the file */
-  gboolean            is_shared;
-  gboolean            can_write;
-  gboolean            can_guests;
-  gchar              *share_name;
-  gchar              *share_comment;
+  /* Header */
+  GtkWidget           *header_hbox;
+  GtkWidget           *header_image;
+  GtkWidget           *header_title;
+  GtkWidget           *header_sep;
 
-  gboolean            supports_guest;
+  /* Trackers list */
+  GtkTreeView         *trackers_tree_view;
 };
 
 /* implements the torrent_page_get_type() and torrent_page_register_type() functions */
@@ -62,89 +58,65 @@ static void torrent_page_class_init (TorrentPageClass *klass) {
 
 
 static void torrent_page_init (TorrentPage *page) {
-  GtkWidget *vbox1;
-  GtkWidget *hbox1;
-  GtkWidget *widget;
-  GtkWidget *trackers_scrolled_window;
-  GtkWidget *tree;
-
-  GtkTreeViewColumn *column;
-  GtkListStore *trackers_list_store;
-  GtkCellRenderer *renderer;
-
 
   /****************\
   * Main container *
   \****************/
-  vbox1 = gtk_vbox_new(FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox1), 5);
+  page->container_vbox = gtk_vbox_new(FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (page->container_vbox), 5);
 
   // /* Header */
-  hbox1 = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox1), hbox1, FALSE, TRUE, 5);
+  page->header_hbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (page->container_vbox), page->header_hbox, FALSE, TRUE, 5);
 
-  widget = gtk_image_new ();
-  gtk_image_set_from_icon_name (GTK_IMAGE (widget), "application-torrent", GTK_ICON_SIZE_DIALOG);
-  gtk_misc_set_padding (GTK_MISC (widget), 13, 0);
-  gtk_misc_set_alignment (GTK_MISC (widget), 0.0, 0.50);
-  gtk_box_pack_start (GTK_BOX (hbox1), widget, FALSE, FALSE, 0);
+  page->header_image = gtk_image_new ();
+  gtk_image_set_from_icon_name (GTK_IMAGE (page->header_image), "application-torrent", GTK_ICON_SIZE_DIALOG);
+  gtk_misc_set_padding (GTK_MISC (page->header_image), 13, 0);
+  gtk_misc_set_alignment (GTK_MISC (page->header_image), 0.0, 0.50);
+  gtk_box_pack_start (GTK_BOX (page->header_hbox), page->header_image, FALSE, FALSE, 0);
 
-  widget = gtk_label_new ("<b>Torrent</b>");
-  gtk_label_set_use_markup (GTK_LABEL(widget), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (widget), 0.0f, 0.50f);
-  gtk_box_pack_start (GTK_BOX (hbox1), widget, FALSE, TRUE, 5);
+  page->header_title = gtk_label_new ("<b>Torrent</b>");
+  gtk_label_set_use_markup (GTK_LABEL(page->header_title), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (page->header_title), 0.0f, 0.50f);
+  gtk_box_pack_start (GTK_BOX (page->header_hbox), page->header_title, FALSE, TRUE, 5);
 
   /* Horizontal separator */
-  widget = gtk_hseparator_new();
-  gtk_box_pack_start (GTK_BOX (vbox1), widget, FALSE, TRUE, 5);
+  page->header_sep = gtk_hseparator_new();
+  gtk_box_pack_start (GTK_BOX (page->container_vbox), page->header_sep, FALSE, TRUE, 5);
 
 
   /**************\
   * Tracker list *
   \**************/
-  trackers_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-  trackers_list_store = gtk_list_store_new (1, G_TYPE_STRING);
-
-  /* TODO: implement a function to fill the model */
-
+  //trackers_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+  GtkListStore* trackers_list_store = gtk_list_store_new (1, G_TYPE_STRING);
   /* Create a view */
-  tree = gtk_tree_view_new_with_model (GTK_TREE_MODEL (trackers_list_store));
+  page->trackers_tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (trackers_list_store));
   /* The view now holds a reference.  We can get rid of our own reference */
   g_object_unref (G_OBJECT (trackers_list_store));
 
   /* Create a cell render and arbitrarily make it red for demonstration
    * purposes */
-  renderer = gtk_cell_renderer_text_new ();
-  g_object_set (G_OBJECT (renderer), "foreground", "red", NULL);
+  GtkCellRenderer* renderer = gtk_cell_renderer_text_new ();
+  g_object_set (G_OBJECT (renderer), "foreground", "black", NULL);
 
    /* Create a column, associating the "text" attribute of the
     * cell_renderer to the first column of the model */
-   column = gtk_tree_view_column_new_with_attributes (
-     "URL", renderer, "text", 0, NULL
+   GtkTreeViewColumn* column = gtk_tree_view_column_new_with_attributes (
+     "Tracker URL", renderer, "text", 0, NULL
    );
 
    /* Add the column to the view. */
-   gtk_tree_view_append_column (GTK_TREE_VIEW (tree), column);
+   gtk_tree_view_append_column (GTK_TREE_VIEW (page->trackers_tree_view), column);
 
    /* Add the tree view to the main container */
-   gtk_box_pack_start (GTK_BOX (vbox1), tree, TRUE, TRUE, 5);
-
-
-
-
-
-
-
-
-
-
-
+   gtk_box_pack_start (GTK_BOX (page->container_vbox), page->trackers_tree_view, TRUE, TRUE, 5);
 
 
   /* Add to the dialog */
-  gtk_container_add (GTK_CONTAINER (page), vbox1);
+  gtk_container_add (GTK_CONTAINER (page), page->container_vbox);
   gtk_container_set_border_width (GTK_CONTAINER (page), 5);
-  gtk_widget_show_all (vbox1);
+  gtk_widget_show_all (page->container_vbox);
 
 }
 
@@ -160,6 +132,9 @@ static void torrent_page_finalize (GObject *object) {
 
   /* disconnect from the file */
   torrent_page_set_file (torrent_page, NULL);
+
+  /* free some memory */
+  //delete_torrent_info(torrent_page->info);
 
   /* Free some memory */
   // if (!G_STR_EMPTY (torrent_page->share_name))
@@ -220,6 +195,10 @@ static void torrent_page_set_property (
 GtkWidget* torrent_page_new (ThunarxFileInfo *file) {
   TorrentPage *page = g_object_new (TORRENT_TYPE_PAGE, "file", file, NULL);
   thunarx_property_page_set_label (THUNARX_PROPERTY_PAGE (page), "Torrent");
+
+  TorrentInfo *info = torrent_info_from_file_info(file);
+
+  torrent_page_update_info(page, info);
   return GTK_WIDGET (page);
 }
 
@@ -272,5 +251,26 @@ void torrent_page_set_file (TorrentPage *torrent_page, ThunarxFileInfo *file) {
 static void torrent_page_file_changed (
   ThunarxFileInfo *file, gpointer user_data
 ) {
+}
 
+
+
+static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *info) {
+
+  g_message("Updating TorrentPage from TorrentInfo");
+  g_message(info->name);
+  gtk_label_set_text(GTK_LABEL(torrent_page->header_title), info->name);
+
+  GtkListStore* trackers_list_store = GTK_LIST_STORE(gtk_tree_view_get_model(torrent_page->trackers_tree_view));
+  GtkTreeIter iter;
+
+  gtk_list_store_clear (trackers_list_store);
+
+  for (int i=0; i < info->trackerc; i++) {
+    g_message(info->trackerv[i]);
+    gtk_list_store_append(trackers_list_store, &iter);
+    gtk_list_store_set(trackers_list_store, &iter, 0, info->trackerv[i], -1);
+  }
+
+  g_message("Successfully updated TorrentPage from TorrentInfo");
 }

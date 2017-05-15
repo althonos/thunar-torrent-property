@@ -103,5 +103,9 @@ static GList* torrent_provider_get_pages (
   }
 
   g_message("TORRENT FILE OK !");
-  return g_list_append(NULL, (gpointer) torrent_page_new(files->data));
+
+  TorrentPage* torrent_page = torrent_page_new(files->data);
+
+  g_message("Appending TorrentPage to GList");
+  return g_list_append(NULL, (gpointer) torrent_page);//torrent_page_new(files->data));
 }
