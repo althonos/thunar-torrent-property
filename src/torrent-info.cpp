@@ -105,8 +105,7 @@ extern TorrentInfo* torrent_info_from_file_info(ThunarxFileInfo* info) {
       /* Extract info from torrent */
       GFile* gfile = thunarx_file_info_get_location(info);
       TorrentInfo* torrent_info = create_torrent_info(g_file_get_path(gfile));
-      // FIXME: this causes SIGSEGV sometimes
-      // g_object_unref(gfile);
+      g_object_unref(gfile);
       return torrent_info;
 }
 
