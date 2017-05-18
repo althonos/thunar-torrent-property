@@ -226,4 +226,5 @@ static void torrent_page_file_changed (
 static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *info) {
   torrent_page_set_title(torrent_page, info->name);
   torrent_page_set_trackers(torrent_page, info->trackerc, info->trackerv);
+  torrent_page_set_files(torrent_page, info->filesc, info->filesv, info->sizev);
 }

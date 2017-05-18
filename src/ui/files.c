@@ -6,7 +6,8 @@ static GtkWidget* torrent_page_new_files_view(TorrentPage* page) {
   GtkCellRenderer* renderer = gtk_cell_renderer_text_new();
   GtkCellRendererPixbuf* icon_renderer = gtk_cell_renderer_pixbuf_new();
   GtkWidget* window = gtk_scrolled_window_new(NULL, NULL);
-  GtkListStore* store = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+  //GtkListStore* store = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+  GtkListStore* store = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
   GtkWidget* tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
   g_object_unref(G_OBJECT(store));
 
@@ -16,7 +17,7 @@ static GtkWidget* torrent_page_new_files_view(TorrentPage* page) {
   // gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
   column = gtk_tree_view_column_new_with_attributes("Path", renderer, "text", 0, NULL);
   gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
-  column = gtk_tree_view_column_new_with_attributes("Size", renderer, "text", 1, NULL);
+  column = gtk_tree_view_column_new_with_attributes("Size (B)", renderer, "text", 1, NULL);
   gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
 
   page->files = tree_view;
@@ -28,7 +29,8 @@ static GtkWidget* torrent_page_new_files_view(TorrentPage* page) {
 
 static void torrent_page_set_files(TorrentPage* page, int size, char** files, int* sizes) {
 
-  GtkListStore* new_list_store = gtk_list_store_new(3, GTK_TYPE_STRING, GTK_TYPE_STRING, GTK_TYPE_STRING);
+  //GtkListStore* new_list_store = gtk_list_store_new(3, GTK_TYPE_STRING, GTK_TYPE_STRING, GTK_TYPE_STRING);
+  GtkListStore* new_list_store = gtk_list_store_new(2, GTK_TYPE_STRING, GTK_TYPE_INT);
   gtk_tree_view_set_model(page->files, NULL);
 
   GtkTreeIter iter;
@@ -38,6 +40,8 @@ static void torrent_page_set_files(TorrentPage* page, int size, char** files, in
     gtk_list_store_set(GTK_LIST_STORE(new_list_store), &iter, 0, files[i], 1, sizes[i], -1);
   }
 
+  gtk_tree_view_set_model(GTK_TREE_VIEW(page->files), new_list_store);
+  g_object_unref(G_OBJECT(new_list_store));
 
 }
 

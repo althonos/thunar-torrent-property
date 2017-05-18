@@ -63,7 +63,7 @@ extern TorrentInfo* torrent_info_from_torrent_file(const char* filename) {
         info->filesv[i] = (char*) malloc(file_path.size() * sizeof(char));
         strcpy(info->filesv[i], file_path.c_str());
         info->sizev[i] = ti.files().file_size(i);
-        g_message(file_path.c_str());
+        g_message("%s (%i B)", file_path.c_str(), info->sizev[i]);
     }
 
     /* Return the update struct */
@@ -95,6 +95,7 @@ extern void torrent_info_delete(TorrentInfo* info) {
     // for (int i=0; i < info->filesc; i++)
     //     free(info->filesv[i]);
     // free(info->filesv);
+    // free(info->sizev);
 
     free(info);
 }
