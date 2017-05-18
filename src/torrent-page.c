@@ -5,6 +5,11 @@
 #include "torrent-page.h"
 #include "torrent-info.h"
 
+#include "ui/header.c"
+#include "ui/trackers.c"
+#include "ui/files.c"
+
+
 
 /* Property identifiers */
 enum {
@@ -18,27 +23,27 @@ struct _TorrentPage {
   ThunarxFileInfo     *file;
   TorrentInfo         *info;
 
-  /* Renderers */
-  GtkCellRenderer     *renderer_trackers;
-  GtkCellRenderer     *renderer_files;
-  GtkCellRenderer     *renderer_file_icons;
-
-  /* Page container */
-  GtkWidget           *container_vbox;
-
-  /* Header */
-  GtkWidget           *header_hbox;
-  GtkWidget           *header_image;
-  GtkWidget           *header_title;
-  GtkWidget           *header_sep;
-
-  /* Trackers list */
-  GtkWidget           *trackers_scrolled_window;
-  GtkWidget           *trackers_tree_view;
-
-  /* Files list */
-  GtkWidget           *files_scrolled_window;
-  GtkWidget           *files_tree_view;
+  // /* Renderers */
+  // GtkCellRenderer     *renderer_trackers;
+  // GtkCellRenderer     *renderer_files;
+  // GtkCellRenderer     *renderer_file_icons;
+  //
+  // /* Page container */
+  // GtkWidget           *container_vbox;
+  //
+  // /* Header */
+  // GtkWidget           *header_hbox;
+  // GtkWidget           *header_image;
+  // GtkWidget           *header_title;
+  // GtkWidget           *header_sep;
+  //
+  // /* Trackers list */
+  // GtkWidget           *trackers_scrolled_window;
+  // GtkWidget           *trackers_tree_view;
+  //
+  // /* Files list */
+  // GtkWidget           *files_scrolled_window;
+  // GtkWidget           *files_tree_view;
 };
 
 /* implements the torrent_page_get_type() and torrent_page_register_type() functions */
@@ -71,90 +76,85 @@ static void torrent_page_class_init (TorrentPageClass *klass) {
 
 static void torrent_page_init (TorrentPage *page) {
 
-  /* Local variables */
-  GtkTreeViewColumn *column;
-  GtkListStore *trackers_list_store;
-  GtkTreeStore *files_tree_store;
+
+  //
+  //
+  // /****************\
+  // *    Renderers   *
+  // \****************/
+  // page->renderer_trackers = gtk_cell_renderer_text_new();
+  // page->renderer_files = gtk_cell_renderer_text_new();
+  // page->renderer_file_icons = gtk_cell_renderer_pixbuf_new();
+  // // g_object_set(G_OBJECT(renderer), "foreground", "black", NULL);
+  // // g_object_set(G_OBJECT(renderer), "background", "white", NULL);
+  //
+  //
+  //
+  // /**************\
+  // * Tracker list *
+  // \**************/
+  // page->trackers_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+  // trackers_list_store = gtk_list_store_new(1, G_TYPE_STRING);
+  // page->trackers_tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL (trackers_list_store));
+  // g_object_unref(G_OBJECT(trackers_list_store));
+  //
+  // column = gtk_tree_view_column_new_with_attributes ("Tracker URL", page->renderer_trackers, "text", 0, NULL);
+  // gtk_tree_view_append_column (GTK_TREE_VIEW (page->trackers_tree_view), column);
+  //
+  // gtk_container_add(GTK_CONTAINER(page->trackers_scrolled_window), page->trackers_tree_view);
+  // gtk_box_pack_start (GTK_BOX (page->container_vbox), page->trackers_scrolled_window, TRUE, TRUE, 5);
+  //
+  //
+  // /**************\
+  // *  Files list  *
+  // \**************/
+  // page->files_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+  // files_tree_store = gtk_tree_store_new(3, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_INT);
+  // page->files_tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(files_tree_store));
+  // g_object_unref(G_OBJECT(trackers_list_store));
+  //
+  // column = gtk_tree_view_column_new_with_attributes ("Icon", page->renderer_file_icons, "icon-name", 0, NULL);
+  // gtk_tree_view_append_column (GTK_TREE_VIEW (page->files_tree_view), column);
+  // column = gtk_tree_view_column_new_with_attributes ("Path", page->renderer_files, "text", 1, NULL);
+  // gtk_tree_view_append_column (GTK_TREE_VIEW (page->files_tree_view), column);
+  // column = gtk_tree_view_column_new_with_attributes ("Size", page->renderer_files, "text", 2, NULL);
+  // gtk_tree_view_append_column (GTK_TREE_VIEW (page->files_tree_view), column);
+  //
+  // gtk_container_add(GTK_CONTAINER(page->files_scrolled_window), page->files_tree_view);
+  // gtk_box_pack_start (GTK_BOX (page->container_vbox), page->files_scrolled_window, TRUE, TRUE, 5);
+  //
+  //
+  // /* Add to the dialog */
+  // gtk_container_add (GTK_CONTAINER (page), page->container_vbox);
+  // gtk_container_set_border_width (GTK_CONTAINER (page), 5);
+  // gtk_widget_show_all (page->container_vbox);
 
 
-  /****************\
-  * Main container *
-  \****************/
-  page->container_vbox = gtk_vbox_new(FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (page->container_vbox), 5);
+  /* Create the container */
+  GtkWidget* container = gtk_vbox_new(FALSE, 3);
 
+  /* Create the header and add the header to the page */
+  GtkWidget* header = torrent_page_new_header(page);
+  gtk_box_pack_start(GTK_BOX(container), header, FALSE, TRUE, 3);
 
-  /****************\
-  *    Renderers   *
-  \****************/
-  page->renderer_trackers = gtk_cell_renderer_text_new();
-  page->renderer_files = gtk_cell_renderer_text_new();
-  page->renderer_file_icons = gtk_cell_renderer_pixbuf_new();
-  // g_object_set(G_OBJECT(renderer), "foreground", "black", NULL);
-  // g_object_set(G_OBJECT(renderer), "background", "white", NULL);
+  /* Create the trackers TreeView */
+  //GtkWidget* trackers = torrent_page_new_trackers_view(page);
+  //gtk_box_pack_start(GTK_BOX(container), trackers, FALSE, TRUE, 3);
 
+  /* Create the files TreeView */
+  //GtkWidget* files = torrent_page_new_files_view(page);
+  //gtk_box_pack_start(GTK_BOX(container), files, FALSE, TRUE, 3);
 
-  /****************\
-  *     Header     *
-  \****************/
-  page->header_hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (page->container_vbox), page->header_hbox, FALSE, TRUE, 5);
-
-  page->header_image = gtk_image_new ();
-  gtk_image_set_from_icon_name (GTK_IMAGE (page->header_image), "application-torrent", GTK_ICON_SIZE_DIALOG);
-  gtk_misc_set_padding (GTK_MISC (page->header_image), 13, 0);
-  gtk_misc_set_alignment (GTK_MISC (page->header_image), 0.0, 0.50);
-  gtk_box_pack_start (GTK_BOX (page->header_hbox), page->header_image, FALSE, FALSE, 0);
-
-  page->header_title = gtk_label_new ("<b>Torrent</b>");
-  gtk_label_set_use_markup (GTK_LABEL(page->header_title), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (page->header_title), 0.0f, 0.50f);
-  gtk_box_pack_start (GTK_BOX (page->header_hbox), page->header_title, FALSE, TRUE, 5);
-
-  page->header_sep = gtk_hseparator_new();
-  gtk_box_pack_start (GTK_BOX (page->container_vbox), page->header_sep, FALSE, TRUE, 5);
-
-
-  /**************\
-  * Tracker list *
-  \**************/
-  page->trackers_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-  trackers_list_store = gtk_list_store_new(1, G_TYPE_STRING);
-  page->trackers_tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL (trackers_list_store));
-  g_object_unref(G_OBJECT(trackers_list_store));
-
-  column = gtk_tree_view_column_new_with_attributes ("Tracker URL", page->renderer_trackers, "text", 0, NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (page->trackers_tree_view), column);
-
-  gtk_container_add(GTK_CONTAINER(page->trackers_scrolled_window), page->trackers_tree_view);
-  gtk_box_pack_start (GTK_BOX (page->container_vbox), page->trackers_scrolled_window, TRUE, TRUE, 5);
-
-
-  /**************\
-  *  Files list  *
-  \**************/
-  page->files_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-  files_tree_store = gtk_tree_store_new(3, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_INT);
-  page->files_tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(files_tree_store));
-  g_object_unref(G_OBJECT(trackers_list_store));
-
-  column = gtk_tree_view_column_new_with_attributes ("Icon", page->renderer_file_icons, "icon-name", 0, NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (page->files_tree_view), column);
-  column = gtk_tree_view_column_new_with_attributes ("Path", page->renderer_files, "text", 1, NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (page->files_tree_view), column);
-  column = gtk_tree_view_column_new_with_attributes ("Size", page->renderer_files, "text", 2, NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (page->files_tree_view), column);
-
-  gtk_container_add(GTK_CONTAINER(page->files_scrolled_window), page->files_tree_view);
-  gtk_box_pack_start (GTK_BOX (page->container_vbox), page->files_scrolled_window, TRUE, TRUE, 5);
-
-
-  /* Add to the dialog */
-  gtk_container_add (GTK_CONTAINER (page), page->container_vbox);
-  gtk_container_set_border_width (GTK_CONTAINER (page), 5);
-  gtk_widget_show_all (page->container_vbox);
+  /* Add the container to the page */
+  gtk_container_add (GTK_CONTAINER(page), container);
+  gtk_container_set_border_width (GTK_CONTAINER(page), 5);
+  gtk_widget_show_all(container);
 
 }
+
+
+
+
 
 
 
@@ -168,12 +168,6 @@ static void torrent_page_finalize (GObject *object) {
 
   /* disconnect from the file */
   torrent_page_set_file (torrent_page, NULL);
-
-  /* Free some memory */
-  // if (!G_STR_EMPTY (torrent_page->share_name))
-  //   g_free (torrent_page->share_name);
-  // if (!G_STR_EMPTY (torrent_page->share_comment))
-  //   g_free (torrent_page->share_comment);
 
   /* Call the destructor of the parent class */
   (*G_OBJECT_CLASS (torrent_page_parent_class)->finalize) (object);
@@ -289,25 +283,27 @@ static void torrent_page_file_changed (
 
 
 
+
+
 static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *info) {
 
-  g_message("Updating TorrentPage from TorrentInfo");
-  g_message(info->name);
-  gtk_label_set_text(GTK_LABEL(torrent_page->header_title), info->name);
-
-  /* Update the trackers list */
-  GtkListStore *new_list_store;
-  GtkTreeIter iter;
-  gtk_tree_view_set_model(torrent_page->trackers_tree_view, NULL); /* unrefs the old model */
-  new_list_store = gtk_list_store_new (1, GTK_TYPE_STRING);
-  for (int i=0; i < info->trackerc; i++) {
-    g_message(info->trackerv[i]);
-    gtk_list_store_append(GTK_LIST_STORE(new_list_store), &iter);
-    gtk_list_store_set(GTK_LIST_STORE(new_list_store), &iter, 0, info->trackerv[i], -1);
-  }
-  gtk_tree_view_set_model(torrent_page->trackers_tree_view, new_list_store);
-  g_object_unref (new_list_store);
-
-
-  g_message("Successfully updated TorrentPage from TorrentInfo");
+  // g_message("Updating TorrentPage from TorrentInfo");
+  // g_message(info->name);
+  // gtk_label_set_text(GTK_LABEL(torrent_page->header_title), info->name);
+  //
+  // /* Update the trackers list */
+  // GtkListStore *new_list_store;
+  // GtkTreeIter iter;
+  // gtk_tree_view_set_model(torrent_page->trackers_tree_view, NULL); /* unrefs the old model */
+  // new_list_store = gtk_list_store_new (1, GTK_TYPE_STRING);
+  // for (int i=0; i < info->trackerc; i++) {
+  //   g_message(info->trackerv[i]);
+  //   gtk_list_store_append(GTK_LIST_STORE(new_list_store), &iter);
+  //   gtk_list_store_set(GTK_LIST_STORE(new_list_store), &iter, 0, info->trackerv[i], -1);
+  // }
+  // gtk_tree_view_set_model(torrent_page->trackers_tree_view, new_list_store);
+  // g_object_unref (new_list_store);
+  //
+  //
+  // g_message("Successfully updated TorrentPage from TorrentInfo");
 }
