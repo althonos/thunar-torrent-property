@@ -38,7 +38,6 @@ static GtkWidget* torrent_page_new_header(TorrentPage* page) {
 }
 
 
-
 static void torrent_page_set_title(TorrentPage* page, char* title) {
   g_message("Setting title: %s", title);
   gtk_label_set_text(GTK_LABEL(page->title), title);
@@ -65,3 +64,32 @@ static void torrent_page_set_seeders_value(TorrentPage* page, int seeders) {
     g_free (markup);
   }
 };
+
+
+
+
+static void torrent_page_update_torrent_status(gpointer args) {
+
+  TorrentPage* page = args;
+  ThunarxFileInfo* info = torrent_page_get_file (page);
+
+  TorrentInfo* torrent_info = torrent_info_from_thunarx_file_info(info);
+
+  g_message("IN THREAD: Updating stats of %s", torrent_info->name);
+
+  TorrentStatus* status = torrent_status_from_thunarx_file_info(THUNARX_FILE_INFO(info));
+  torrent_page_set_seeders_value(TORRENT_PAGE(page), status->seeders);
+  torrent_page_set_leechers_value(TORRENT_PAGE(page), status->leechers);
+  g_message("Seeders: %i", status->seeders);
+  g_message("Leechers: %i", status->seeders);
+}
+
+
+
+
+static void torrent_page_spawn_update_thread(TorrentPage* page, ThunarxFileInfo* info) {
+
+  g_thread_new (
+    "update-thread", torrent_page_update_torrent_status, page
+  );
+}

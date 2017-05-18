@@ -4,6 +4,7 @@
 
 #include "torrent-page.h"
 #include "wrappers/torrent-info.h"
+#include "wrappers/torrent-status.h"
 
 /* Property identifiers */
 enum {
@@ -57,6 +58,7 @@ static void torrent_page_class_init (TorrentPageClass *klass) {
       G_PARAM_READWRITE
     )
   );
+
 }
 
 
@@ -68,7 +70,7 @@ static void torrent_page_init (TorrentPage *page) {
   /* Create the header */
   GtkWidget* header = torrent_page_new_header(page);
 
-  /* Create the view container */
+  /* Create an homogeneous view container */
   GtkWidget* view_container = gtk_vbox_new(TRUE, 3);
 
   /* Create the trackers TreeView */
@@ -90,15 +92,6 @@ static void torrent_page_init (TorrentPage *page) {
 }
 
 
-
-
-
-
-
-
-
-
-
 static void torrent_page_finalize (GObject *object) {
   /* Check the object is a TorrentPage */
   TorrentPage *torrent_page = TORRENT_PAGE(object);
@@ -109,9 +102,6 @@ static void torrent_page_finalize (GObject *object) {
   /* Call the destructor of the parent class */
   (*G_OBJECT_CLASS (torrent_page_parent_class)->finalize) (object);
 }
-
-
-
 
 
 static void torrent_page_get_property (
@@ -128,10 +118,6 @@ static void torrent_page_get_property (
       break;
   }
 }
-
-
-
-
 
 
 
@@ -153,32 +139,22 @@ static void torrent_page_set_property (
 
 
 
-
-
-
 GtkWidget* torrent_page_new (ThunarxFileInfo *file) {
   TorrentPage *page = g_object_new (TORRENT_TYPE_PAGE, "file", file, NULL);
   thunarx_property_page_set_label (THUNARX_PROPERTY_PAGE (page), "Torrent");
 
   TorrentInfo *info = torrent_info_from_thunarx_file_info(file);
   torrent_page_update_info(page, info);
-  // torrent_info_delete(info);
+  // FIXME: torrent_info_delete(info);
 
   return GTK_WIDGET (page);
 }
-
-
-
-
 
 
 ThunarxFileInfo* torrent_page_get_file (TorrentPage *torrent_page) {
   g_return_val_if_fail (TORRENT_IS_PAGE (torrent_page), NULL);
   return torrent_page->file;
 }
-
-
-
 
 
 void torrent_page_set_file (TorrentPage *torrent_page, ThunarxFileInfo *file) {
@@ -219,12 +195,8 @@ static void torrent_page_file_changed (
 }
 
 
-
-
-
 static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *info) {
   g_message("Updating info");
-
 
   if (info != NULL) {
     g_message("%s", info->name);
@@ -232,4 +204,9 @@ static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *inf
     torrent_page_set_trackers(torrent_page, info->trackerc, info->trackerv);
     torrent_page_set_files(torrent_page, info->filesc, info->filesv, info->sizev);
   }
+
+  //FIXME torrent_page_spawn_update_thread(torrent_page, info);
+
+
+
 }

@@ -26,7 +26,6 @@ static GtkWidget* torrent_page_new_files_view(TorrentPage* page) {
 }
 
 
-
 static void torrent_page_set_files(TorrentPage* page, long int size, char** files, int* sizes) {
 
   //GtkListStore* new_list_store = gtk_list_store_new(3, GTK_TYPE_STRING, GTK_TYPE_STRING, GTK_TYPE_STRING);
@@ -44,6 +43,8 @@ static void torrent_page_set_files(TorrentPage* page, long int size, char** file
   g_object_unref(G_OBJECT(new_list_store));
 
 }
+
+
 
 
 
