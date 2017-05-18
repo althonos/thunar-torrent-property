@@ -48,9 +48,22 @@ extern TorrentInfo* torrent_info_from_torrent_file(const char* filename) {
     info->trackerv = (char**) malloc(ti.trackers().size() * sizeof(char*));
     info->trackerc = 0;
     for(const auto& tracker: ti.trackers()) {
-        info->trackerv[info->trackerc] = (char*) malloc(tracker.url.size() * sizeof(char*));
+        info->trackerv[info->trackerc] = (char*) malloc(tracker.url.size() * sizeof(char));
         strcpy(info->trackerv[info->trackerc], tracker.url.c_str());
         info->trackerc += 1;
+    }
+
+
+    /* Put the files in an array of char* */
+    info->filesc = ti.files().num_files();
+    info->filesv = (char**) malloc(ti.files().num_files() * sizeof(char*));
+    info->sizev = (uint*) malloc(ti.files().num_files() * sizeof(uint));
+    for (int i=0; i < info->filesc; i++) {
+        std::string file_path = ti.files().file_path(i);
+        info->filesv[i] = (char*) malloc(file_path.size() * sizeof(char));
+        strcpy(info->filesv[i], file_path.c_str());
+        info->sizev[i] = ti.files().file_size(i);
+        g_message(file_path.c_str());
     }
 
     /* Return the update struct */
