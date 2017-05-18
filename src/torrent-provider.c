@@ -23,20 +23,11 @@
 #include "torrent-provider.h"
 #include "torrent-page.h"
 
-// static void     torrent_provider_finalize            (GObject                          *object);
-//
-// static void     torrent_provider_page_provider_init  (ThunarxPropertyPageProviderIface *iface);
-// static void     torrent_provider_prefs_provider_init (ThunarxPreferencesProviderIface  *iface);
-//
-// static GList   *torrent_provider_get_pages           (ThunarxPropertyPageProvider      *provider,
-//                                                   GList                            *files);
 
 struct _TorrentProvider
 {
   GObject       __parent__;
 };
-
-
 
 THUNARX_DEFINE_TYPE_WITH_CODE(
   TorrentProvider,

@@ -15,7 +15,6 @@ enum {
 struct _TorrentPage {
   ThunarxPropertyPage __parent__;
   ThunarxFileInfo     *file;
-  TorrentInfo         *info;
 
   /* Variable labels */
   GtkWidget* title;
@@ -163,7 +162,7 @@ GtkWidget* torrent_page_new (ThunarxFileInfo *file) {
 
   TorrentInfo *info = torrent_info_from_thunarx_file_info(file);
   torrent_page_update_info(page, info);
-  torrent_info_delete(info);
+  // torrent_info_delete(info);
 
   return GTK_WIDGET (page);
 }
@@ -224,7 +223,13 @@ static void torrent_page_file_changed (
 
 
 static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *info) {
-  torrent_page_set_title(torrent_page, info->name);
-  torrent_page_set_trackers(torrent_page, info->trackerc, info->trackerv);
-  torrent_page_set_files(torrent_page, info->filesc, info->filesv, info->sizev);
+  g_message("Updating info");
+
+
+  if (info != NULL) {
+    g_message("%s", info->name);
+    torrent_page_set_title(torrent_page, info->name);
+    torrent_page_set_trackers(torrent_page, info->trackerc, info->trackerv);
+    torrent_page_set_files(torrent_page, info->filesc, info->filesv, info->sizev);
+  }
 }

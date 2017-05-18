@@ -34,9 +34,8 @@ typedef struct {
     /* A char* array containing the path of the files in the torrent */
     char** filesv;
 
-    /* A uint array containing the size of the files in the torrent */
-    uint* sizev;
-
+    /* An containing the size of the files in the torrent */
+    long* sizev;
 
 } TorrentInfo;
 
