@@ -2,7 +2,7 @@
 #define __TORRENT_PAGE_H__
 
 #include <thunarx/thunarx.h>
-#include "torrent-info.h"
+#include "wrappers/torrent-info.h"
 
 G_BEGIN_DECLS;
 

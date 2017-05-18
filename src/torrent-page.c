@@ -3,7 +3,7 @@
 #include <thunarx/thunarx.h>
 
 #include "torrent-page.h"
-#include "torrent-info.h"
+#include "wrappers/torrent-info.h"
 
 /* Property identifiers */
 enum {

@@ -33,7 +33,7 @@ add_definitions(${THUNARX_CFLAGS_OTHER})
 
 # Find source files
 file(GLOB SOURCES src/*.c)
-file(GLOB CXX_SOURCES src/*.cpp)
+file(GLOB CXX_SOURCES src/wrappers/*.cpp)
 
 # Add a shared library
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${CXX_SOURCES})
