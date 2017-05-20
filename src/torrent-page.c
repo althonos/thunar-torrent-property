@@ -23,6 +23,7 @@ struct _TorrentPage {
   GtkWidget* leechers;
   GtkWidget* trackers;
   GtkWidget* files;
+  GtkWidget* refresh;
 };
 
 
