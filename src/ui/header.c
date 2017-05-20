@@ -44,11 +44,13 @@ static void torrent_page_update_torrent_status(gpointer args) {
   g_message("Leechers: %i", status->leechers);
 
   gtk_widget_set_sensitive(page->refresh, TRUE);
+
+  g_thread_unref(g_thread_self());
 }
 
 
 static void torrent_page_on_refresh_clicked(GtkButton *button, gpointer callback_data) {
-  g_thread_new ("refresh-thread", (GThreadFunc) torrent_page_update_torrent_status, 
+  g_thread_new ("refresh-thread", (GThreadFunc) torrent_page_update_torrent_status,
                 callback_data);
 }
 
