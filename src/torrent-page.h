@@ -8,11 +8,7 @@ G_BEGIN_DECLS;
 
 /* Declare the final type */
 #define TORRENT_TYPE_PAGE (torrent_page_get_type())
-G_DECLARE_FINAL_TYPE(
-    TorrentPage,
-    torrent_page,
-    TORRENT, PAGE,
-    ThunarxPropertyPage);
+G_DECLARE_FINAL_TYPE(TorrentPage, torrent_page, TORRENT, PAGE, ThunarxPropertyPage);
 
 /* Declare methods */
 extern GtkWidget *torrent_page_new(ThunarxFileInfo *file) G_GNUC_INTERNAL G_GNUC_MALLOC;

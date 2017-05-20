@@ -7,11 +7,7 @@ G_BEGIN_DECLS;
 
 
 #define TORRENT_TYPE_PROVIDER (torrent_provider_get_type())
-G_DECLARE_FINAL_TYPE(
-    TorrentProvider,
-    torrent_provider,
-    TORRENT, PROVIDER,
-    GObject);
+G_DECLARE_FINAL_TYPE(TorrentProvider, torrent_provider, TORRENT, PROVIDER, GObject);
 
 extern void torrent_provider_register_type(ThunarxProviderPlugin *plugin);
 extern GType torrent_provider_get_type();

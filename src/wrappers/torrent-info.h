@@ -10,35 +10,16 @@ extern "C" {
 #endif
 
 
-
 typedef struct {
-
-    /* Name of the torrent */
-    char* name;
-
-    /* Tool the torrent was created with */
-    char* creator;
-
-    /* An optional comment */
-    char* comment;
-
-    /* The number of trackers in trackerv */
-    int trackerc;
-
-    /* A char* array containing the URL of the trackers */
-    char** trackerv;
-
-    /* The number of files in filesv */
-    int filesc;
-
-    /* A char* array containing the path of the files in the torrent */
-    char** filesv;
-
-    /* An containing the size of the files in the torrent */
-    long* sizev;
-
+    char*  name;            // Name of the torrent
+    char*  creator;         // Software which created the torrent
+    char*  comment;         // Optional comment
+    int    trackerc;        // Number of trackers
+    char** trackerv;        // URL of each tracker
+    int    filesc;          // Number of files
+    char** filesv;          // URL of each file
+    long* sizev;            // Size of each file
 } TorrentInfo;
-
 
 
 /* Create a TorrentInfo from a file path */
@@ -46,6 +27,7 @@ extern TorrentInfo* torrent_info_new();
 extern TorrentInfo* torrent_info_from_thunarx_file_info(ThunarxFileInfo* info);
 extern TorrentInfo* torrent_info_from_torrent_file(const char* filename);
 extern void torrent_info_delete(TorrentInfo* info);
+
 
 #ifdef __cplusplus
 }

@@ -26,5 +26,4 @@ extern void torrent_status_delete(TorrentStatus* status);
 }
 #endif
 
-
 #endif
