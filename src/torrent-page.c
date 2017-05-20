@@ -7,10 +7,7 @@
 #include "wrappers/torrent-status.h"
 
 /* Property identifiers */
-enum {
-  PROP_0,
-  PROP_FILE,
-};
+enum { PROP_0, PROP_FILE };
 
 
 struct _TorrentPage {
@@ -50,15 +47,10 @@ static void torrent_page_class_init (TorrentPageClass *klass) {
   *
   * The ThunarxFileInfo displayed by this TorrentPage.
   **/
-  g_object_class_install_property (
-    gobject_class,
-    PROP_FILE,
-    g_param_spec_object (
-      "file", "file", "file",
-      THUNARX_TYPE_FILE_INFO,
-      G_PARAM_READWRITE
-    )
-  );
+  g_object_class_install_property (gobject_class, PROP_FILE,
+                                   g_param_spec_object("file", "file", "file",
+                                                       THUNARX_TYPE_FILE_INFO,
+                                                       G_PARAM_READWRITE));
 
 }
 
@@ -105,9 +97,9 @@ static void torrent_page_finalize (GObject *object) {
 }
 
 
-static void torrent_page_get_property (
-  GObject *object, guint prop_id, GValue *value, GParamSpec *pspec
-) {
+static void torrent_page_get_property (GObject *object, guint prop_id,
+                                       GValue *value, GParamSpec *pspec) {
+
   TorrentPage *torrent_page = TORRENT_PAGE(object);
 
   switch (prop_id) {
@@ -122,10 +114,9 @@ static void torrent_page_get_property (
 
 
 
-static void torrent_page_set_property (
-  GObject *object, guint prop_id, const GValue *value,
-  GParamSpec *pspec
-) {
+static void torrent_page_set_property (GObject *object, guint prop_id,
+                                       const GValue *value, GParamSpec *pspec) {
+
   TorrentPage *torrent_page = TORRENT_PAGE(object);
 
   switch (prop_id) {
@@ -141,8 +132,8 @@ static void torrent_page_set_property (
 
 
 GtkWidget* torrent_page_new (ThunarxFileInfo *file) {
-  TorrentPage *page = g_object_new (TORRENT_TYPE_PAGE, "file", file, NULL);
-  thunarx_property_page_set_label (THUNARX_PROPERTY_PAGE (page), "Torrent");
+  TorrentPage *page = g_object_new(TORRENT_TYPE_PAGE, "file", file, NULL);
+  thunarx_property_page_set_label(THUNARX_PROPERTY_PAGE (page), "Torrent");
 
   TorrentInfo *info = torrent_info_from_thunarx_file_info(file);
   torrent_page_update_info(page, info);
@@ -168,7 +159,9 @@ void torrent_page_set_file (TorrentPage *torrent_page, ThunarxFileInfo *file) {
 
   /* Disconnect from the previous file (if any) */
   if (G_LIKELY (torrent_page->file != NULL)) {
-    g_signal_handlers_disconnect_by_func (G_OBJECT (torrent_page->file), torrent_page_file_changed, torrent_page);
+    g_signal_handlers_disconnect_by_func(G_OBJECT(torrent_page->file),
+                                         torrent_page_file_changed,
+                                         torrent_page);
     g_object_unref (G_OBJECT (torrent_page->file));
   }
 
@@ -190,10 +183,10 @@ void torrent_page_set_file (TorrentPage *torrent_page, ThunarxFileInfo *file) {
 
 
 /* File changed */
-static void torrent_page_file_changed (
-  ThunarxFileInfo *file, gpointer user_data
-) {
+static void torrent_page_file_changed (ThunarxFileInfo *file, gpointer user_data) {
+
 }
+
 
 
 static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *info) {

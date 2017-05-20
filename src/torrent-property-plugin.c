@@ -32,8 +32,8 @@
 /* Export module interface */
 G_MODULE_EXPORT void thunar_extension_initialize (ThunarxProviderPlugin *plugin);
 G_MODULE_EXPORT void thunar_extension_shutdown   (void);
-G_MODULE_EXPORT void thunar_extension_list_types (const GType          **types,
-                                                  gint                  *n_types);
+G_MODULE_EXPORT void thunar_extension_list_types (const GType **types,
+                                                  gint *n_types);
 
 static GType type_list[1];
 
@@ -43,8 +43,7 @@ G_MODULE_EXPORT void thunar_extension_initialize (ThunarxProviderPlugin *plugin)
 	const gchar* mismatch = thunarx_check_version(
     THUNARX_MAJOR_VERSION,
     THUNARX_MINOR_VERSION,
-    THUNARX_MICRO_VERSION
-  );
+    THUNARX_MICRO_VERSION);
 	if (G_UNLIKELY(mismatch != NULL)) {
 		g_warning ("Version mismatch: %s", mismatch);
 		return;
@@ -76,10 +75,8 @@ G_MODULE_EXPORT void thunar_extension_shutdown (void) {
 }
 
 
-G_MODULE_EXPORT void thunar_extension_list_types (
-  const GType **types,
-  gint *n_types
-) {
+G_MODULE_EXPORT void thunar_extension_list_types (const GType **types,
+                                                  gint *n_types) {
 	*types = type_list;
 	*n_types = G_N_ELEMENTS(type_list);
 }

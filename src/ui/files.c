@@ -4,7 +4,7 @@
 static GtkWidget* torrent_page_new_files_view(TorrentPage* page) {
 
   GtkCellRenderer* renderer = gtk_cell_renderer_text_new();
-  GtkCellRendererPixbuf* icon_renderer = gtk_cell_renderer_pixbuf_new();
+  GtkCellRenderer* icon_renderer = gtk_cell_renderer_pixbuf_new();
   GtkWidget* window = gtk_scrolled_window_new(NULL, NULL);
   //GtkListStore* store = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
   GtkListStore* store = gtk_list_store_new(2, G_TYPE_STRING, GTK_TYPE_LONG);
@@ -26,11 +26,11 @@ static GtkWidget* torrent_page_new_files_view(TorrentPage* page) {
 }
 
 
-static void torrent_page_set_files(TorrentPage* page, long int size, char** files, int* sizes) {
+static void torrent_page_set_files(TorrentPage* page, long int size, char** files, long int* sizes) {
 
   //GtkListStore* new_list_store = gtk_list_store_new(3, GTK_TYPE_STRING, GTK_TYPE_STRING, GTK_TYPE_STRING);
   GtkListStore* new_list_store = gtk_list_store_new(2, GTK_TYPE_STRING, GTK_TYPE_LONG);
-  gtk_tree_view_set_model(page->files, NULL);
+  gtk_tree_view_set_model(GTK_TREE_VIEW(page->files), NULL);
 
   GtkTreeIter iter;
   for (int i=0; i < size; i++) {
@@ -39,7 +39,7 @@ static void torrent_page_set_files(TorrentPage* page, long int size, char** file
     gtk_list_store_set(GTK_LIST_STORE(new_list_store), &iter, 0, files[i], 1, sizes[i], -1);
   }
 
-  gtk_tree_view_set_model(GTK_TREE_VIEW(page->files), new_list_store);
+  gtk_tree_view_set_model(GTK_TREE_VIEW(page->files), GTK_TREE_MODEL(new_list_store));
   g_object_unref(G_OBJECT(new_list_store));
 
 }

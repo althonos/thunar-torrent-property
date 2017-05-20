@@ -24,7 +24,7 @@ static GtkWidget* torrent_page_new_trackers_view(TorrentPage* page) {
 static void torrent_page_set_trackers(TorrentPage* page, int size, char** trackers) {
 
   GtkListStore* new_list_store = gtk_list_store_new (1, GTK_TYPE_STRING);
-  gtk_tree_view_set_model(page->trackers, NULL); /* unrefs the old model */
+  gtk_tree_view_set_model(GTK_TREE_VIEW(page->trackers), NULL); /* unrefs the old model */
 
   GtkTreeIter iter;
   for (int i=0; i < size; i++) {
@@ -33,6 +33,6 @@ static void torrent_page_set_trackers(TorrentPage* page, int size, char** tracke
     gtk_list_store_set(GTK_LIST_STORE(new_list_store), &iter, 0, trackers[i], -1);
   }
 
-  gtk_tree_view_set_model(GTK_TREE_VIEW(page->trackers), new_list_store);
+  gtk_tree_view_set_model(GTK_TREE_VIEW(page->trackers), GTK_TREE_MODEL(new_list_store));
   g_object_unref(G_OBJECT(new_list_store));
 }

@@ -35,13 +35,10 @@ THUNARX_DEFINE_TYPE_WITH_CODE(
   G_TYPE_OBJECT,
   THUNARX_IMPLEMENT_INTERFACE (
     THUNARX_TYPE_PROPERTY_PAGE_PROVIDER,
-    torrent_provider_page_provider_init
-  )
+    torrent_provider_page_provider_init)
   THUNARX_IMPLEMENT_INTERFACE (
     THUNARX_TYPE_PREFERENCES_PROVIDER,
-    torrent_provider_prefs_provider_init
-  )
-);
+    torrent_provider_prefs_provider_init));
 
 
 
@@ -66,25 +63,20 @@ static void torrent_provider_finalize (GObject *object) {
 
 
 
-static void torrent_provider_page_provider_init (
-  ThunarxPropertyPageProviderIface *iface
-) {
+static void torrent_provider_page_provider_init(ThunarxPropertyPageProviderIface *iface) {
   iface->get_pages = torrent_provider_get_pages;
 }
 
 
 
-static void torrent_provider_prefs_provider_init (
-  ThunarxPreferencesProviderIface *iface
-) {
+static void torrent_provider_prefs_provider_init(ThunarxPreferencesProviderIface *iface) {
 
 }
 
 
 
-static GList* torrent_provider_get_pages (
-  ThunarxPropertyPageProvider *property_page_provider, GList *files
-) {
+static GList* torrent_provider_get_pages (ThunarxPropertyPageProvider *property_page_provider,
+                                          GList *files) {
   if (g_list_length (files) != 1) {
     g_warning("MULTIPLE FILES SELECTED");
     return NULL;
@@ -95,7 +87,7 @@ static GList* torrent_provider_get_pages (
 
   g_message("TORRENT FILE OK !");
 
-  TorrentPage* torrent_page = torrent_page_new(files->data);
+  GtkWidget* torrent_page = torrent_page_new(files->data);
 
   g_message("Appending TorrentPage to GList");
   return g_list_append(NULL, (gpointer) torrent_page);//torrent_page_new(files->data));

@@ -48,9 +48,8 @@ static void torrent_page_update_torrent_status(gpointer args) {
 
 
 static void torrent_page_on_refresh_clicked(GtkButton *button, gpointer callback_data) {
-  g_thread_new (
-    "refresh-thread", torrent_page_update_torrent_status, callback_data
-  );
+  g_thread_new ("refresh-thread", (GThreadFunc) torrent_page_update_torrent_status, 
+                callback_data);
 }
 
 static GtkWidget* torrent_page_new_header(TorrentPage* page) {
@@ -67,7 +66,7 @@ static GtkWidget* torrent_page_new_header(TorrentPage* page) {
   GtkWidget* leechers_value = gtk_label_new("<span foreground='red'><b>N/A</b></span>");
   GtkWidget* refresh_button = gtk_button_new_from_stock(GTK_STOCK_REFRESH);
 
-  g_signal_connect(G_OBJECT(refresh_button), "clicked", torrent_page_on_refresh_clicked, page);
+  g_signal_connect(G_OBJECT(refresh_button), "clicked", G_CALLBACK(torrent_page_on_refresh_clicked), page);
 
   gtk_label_set_use_markup(GTK_LABEL(seeders_label),  TRUE);
   gtk_label_set_use_markup(GTK_LABEL(leechers_label), TRUE);
