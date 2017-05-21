@@ -1,5 +1,5 @@
 # Name and language of the project
-project(thunar-property-torrent)
+project(thunar-torrent-property)
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 # Minimum version of cmake required to build this project
