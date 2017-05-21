@@ -1,4 +1,7 @@
 ## SETUP
+cache:
+  paths:
+    - ext/
 
 variables:
   GIT_STRATEGY: clone
@@ -20,7 +23,7 @@ stages:
 build:archlinux:
   image: base/archlinux
   before_script:
-    - $PACMAN_INSTALL cmake make libtorrent-rasterbar thunar gtk2c
+    - $PACMAN_INSTALL cmake make libtorrent-rasterbar thunar gtk2
   <<: *build
 
 build:ubuntu:
