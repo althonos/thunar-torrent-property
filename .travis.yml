@@ -28,7 +28,7 @@ before_install:
     && sudo dpkg -i libtorrent-rasterbar-git.deb && cd ..
 - sudo apt-get install -y --no-install-recommends
     cmake libthunarx-2-dev libgtk2.0-dev libboost-filesystem-dev
-    libboost-system-dev
+    libboost-system-dev libglib2.0-dev
 
 install:
 - mkdir build && cd build
