@@ -2,7 +2,7 @@
 
 
 BUILDTOOLS="autoconf automake curl libtool"
-REQUIREMENTS="build-essential checkinstall libboost-system-dev libboost-python-dev libboost-chrono-dev libboost-random-dev libssl-dev"
+REQUIREMENTS="build-essential checkinstall libboost-system-dev libboost-python-dev libboost-chrono-dev libboost-random-dev libssl-dev ca-certificates"
 
 VERSION=1.1.3
 PACKAGE="libtorrent-rasterbar-git"
