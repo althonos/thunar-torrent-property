@@ -14,65 +14,68 @@ SRCDIR=${TOPDIR}/libtorrent-libtorrent-${VERSION//./_}
 DEBDIR=${TOPDIR}/${PACKAGE}
 ARCHITECTURE=`dpkg --print-architecture`
 
-apt-get install --no-install-recommends -y $BUILDTOOLS
 apt-get install --no-install-recommends -y $REQUIREMENTS
 
-curl -SsL $ARCHIVE | tar xzv
 
-mkdir -p ${DEBDIR}/usr
+if [ ! -e "${TOPDIR}/${PACKAGE}.deb" ]; then
 
-cd $SRCDIR
-./bootstrap.sh
-./configure --prefix=$DEBDIR/usr
-make -j$(nproc)
-make install
-cd ..
+	apt-get install --no-install-recommends -y $BUILDTOOLS
 
+	curl -SsL $ARCHIVE | tar xzv
 
+	mkdir -p ${DEBDIR}/usr
 
-mkdir -p ${DEBDIR}/DEBIAN
-mkdir -p ${DEBDIR}/usr/lib/pkgconfig
-
-
-cat > ${DEBDIR}/DEBIAN/control <<EOF
-
-Package: $PACKAGE
-Version: $VERSION
-Section: base
-Priority: optional
-Architecture: $ARCHITECTURE
-Maintainer: "Martin Larralde <martin.larralde@ens-cachan.fr>"
-Description: $DESCRIPTION
-
-EOF
+	cd $SRCDIR
+	./bootstrap.sh
+	./configure --prefix=$DEBDIR/usr
+	make -j$(nproc)
+	make install
+	cd ..
 
 
 
-cat > ${DEBDIR}/usr/lib/pkgconfig/libtorrent-rasterbar.pc <<EOF
+	mkdir -p ${DEBDIR}/DEBIAN
+	mkdir -p ${DEBDIR}/usr/lib/pkgconfig
 
-prefix=/usr
-exec_prefix=\${prefix}
-bindir=\${exec_prefix}/bin
-libdir=\${exec_prefix}/lib
-datarootdir=\${prefix}/share
-datadir=\${datarootdir}
-sysconfdir=\${prefix}/etc
-includedir=\${prefix}/include
-package=${PACKAGE%-git}
 
-Name: ${PACKAGE%-git}
-Description: $DESCRIPTION
-Version: $VERSION
-Libs: -L\${libdir} -ltorrent-rasterbar -lboost_system
-Libs.private:  -lboost_chrono -lboost_random -lpthread   -lpthread  -lssl -lcrypto
-Cflags: -I\${includedir} -I\${includedir}/libtorrent -DTORRENT_DISABLE_LOGGING -DTORRENT_USE_OPENSSL -DBOOST_ASIO_HASH_MAP_BUCKETS=1021 -DBOOST_EXCEPTION_DISABLE -DBOOST_ASIO_ENABLE_CANCELIO -DTORRENT_LINKING_SHARED
+	cat > ${DEBDIR}/DEBIAN/control <<-EOF
 
-EOF
+	Package: $PACKAGE
+	Version: $VERSION
+	Section: base
+	Priority: optional
+	Architecture: $ARCHITECTURE
+	Maintainer: \"Martin Larralde <martin.larralde@ens-cachan.fr>\"
+	Description: $DESCRIPTION
+
+	EOF
 
 
 
+	cat > ${DEBDIR}/usr/lib/pkgconfig/libtorrent-rasterbar.pc <<-EOF
+
+	prefix=/usr
+	exec_prefix=\${prefix}
+	bindir=\${exec_prefix}/bin
+	libdir=\${exec_prefix}/lib
+	datarootdir=\${prefix}/share
+	datadir=\${datarootdir}
+	sysconfdir=\${prefix}/etc
+	includedir=\${prefix}/include
+	package=${PACKAGE%-git}
+
+	Name: ${PACKAGE%-git}
+	Description: $DESCRIPTION
+	Version: $VERSION
+	Libs: -L\${libdir} -ltorrent-rasterbar -lboost_system
+	Libs.private:  -lboost_chrono -lboost_random -lpthread   -lpthread  -lssl -lcrypto
+	Cflags: -I\${includedir} -I\${includedir}/libtorrent -DTORRENT_DISABLE_LOGGING -DTORRENT_USE_OPENSSL -DBOOST_ASIO_HASH_MAP_BUCKETS=1021 -DBOOST_EXCEPTION_DISABLE -DBOOST_ASIO_ENABLE_CANCELIO -DTORRENT_LINKING_SHARED
+
+	EOF
 
 
+	dpkg-deb --build ${DEBDIR}
+	rm -rd ${DEBDIR}
+	rm -rd ${SRCDIR}
 
-
-dpkg-deb --build ${DEBDIR}
+fi
