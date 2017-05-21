@@ -43,6 +43,8 @@ file(GLOB CXX_SOURCES src/wrappers/*.cpp)
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${CXX_SOURCES})
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${LIBTORRENT_RB_LIBRARIES})
 
+# Find the thunarx extension dir
+set(THUNARX2_EXTENSIONS_DIR COMMAND "${PKG_CONFIG_EXECUTABLE} --variable=extensionsdir thunarx-2")
 
 # Install the library to the extensions directory
-install(TARGETS ${PROJECT_NAME} DESTINATION ${THUNARX_LIBDIR}/thunarx-2)
+install(TARGETS ${PROJECT_NAME} DESTINATION ${THUNARX2_EXTENSIONS_DIR})
