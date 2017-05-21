@@ -8,18 +8,21 @@ cmake_minimum_required(VERSION 2.8)
 # Use packageconfig to detect headers & library files
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK2 REQUIRED gtk+-2.0)
+pkg_check_modules(GLIB2 REQUIRED glib-2.0>=2.44)
 pkg_check_modules(THUNARX REQUIRED thunarx-2)
 pkg_check_modules(LIBTORRENT_RB REQUIRED libtorrent-rasterbar)
 find_package(Boost 1.49 REQUIRED COMPONENTS system filesystem)
 
 # Let the C compiler know where headers are
 include_directories(${GTK2_INCLUDE_DIRS})
+include_directories(${GLIB2_INCLUDE_DIRS})
 include_directories(${THUNARX_INCLUDE_DIRS})
 include_directories(${LIBTORRENT_RB_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
 
 # Let the linker know where libraries are
 link_directories(${GTK2_LIBRARY_DIRS})
+link_directories(${GLIB2_LIBRARY_DIRS})
 link_directories(${THUNARX_LIBRARY_DIRS})
 link_directories(${LIBTORRENT_RB_LIBRARY_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
@@ -27,8 +30,8 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 # Add other flags to the compiler
 add_definitions(${GTK2_CFLAGS_OTHER})
+add_definitions(${GLIB2_CFLAGS_OTHER})
 add_definitions(${THUNARX_CFLAGS_OTHER})
-
 
 
 # Find source files
