@@ -7,6 +7,7 @@ REQUIREMENTS="build-essential checkinstall libboost-system-dev libboost-python-d
 VERSION=1.1.3
 PACKAGE="libtorrent-rasterbar-git"
 ARCHIVE="https://github.com/arvidn/libtorrent/archive/libtorrent-${VERSION//./_}.tar.gz"
+DESCRIPTION="libtorrent-rasterbar built from source"
 
 TOPDIR=`pwd`
 SRCDIR=${TOPDIR}/libtorrent-libtorrent-${VERSION//./_}
@@ -29,7 +30,8 @@ cd ..
 
 
 
-mkdir ${DEBDIR}/DEBIAN
+mkdir -p ${DEBDIR}/DEBIAN
+mkdir -p ${DEBDIR}/lib/pkgconfig
 
 
 cat > ${DEBDIR}/DEBIAN/control <<EOF
@@ -40,9 +42,36 @@ Section: base
 Priority: optional
 Architecture: $ARCHITECTURE
 Maintainer: "Martin Larralde <martin.larralde@ens-cachan.fr>"
-Description: "libtorrent-rasterbar built from source"
+Description: $DESCRIPTION
 
 EOF
+
+
+
+cat > ${DEBDIR}/lib/pkgconfig/libtorrent-rasterbar.pc <<EOF
+
+prefix=/usr
+exec_prefix=\${prefix}
+bindir=\${exec_prefix}/bin
+libdir=\${exec_prefix}/lib
+datarootdir=\${prefix}/share
+datadir=\${datarootdir}
+sysconfdir=\${prefix}/etc
+includedir=\${prefix}/include
+package=${PACKAGE%-git}
+
+Name: ${PACKAGE%-git}
+Description: $DESCRIPTION
+Version: $VERSION
+Libs: -L\${libdir} -ltorrent-rasterbar -lboost_system
+Libs.private:  -lboost_chrono -lboost_random -lpthread   -lpthread  -lssl -lcrypto
+Cflags: -I\${includedir} -I\${includedir}/libtorrent -DTORRENT_DISABLE_LOGGING -DTORRENT_USE_OPENSSL -DBOOST_ASIO_HASH_MAP_BUCKETS=1021 -DBOOST_EXCEPTION_DISABLE -DBOOST_ASIO_ENABLE_CANCELIO -DTORRENT_LINKING_SHARED
+
+EOF
+
+
+
+
 
 
 
