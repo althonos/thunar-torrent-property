@@ -19,11 +19,11 @@ build:archlinux:
   image: base/archlinux
   before_script:
     - pacman -Syy
-    - pacman -S libtorrent-rasterbar thunar gtk2
+    - pacman -S libtorrent-rasterbar thunar gtk2 --noconfirm
   <<: *build
 
 build:ubuntu:
-  image: base/ubuntu
+  image: library/ubuntu
   before_script:
     - cd ext && bash makedeb-libtorrent-rasterbar.sh && cd ..
     - dkpg -i ext/libtorrent-rasterbar-git.deb
