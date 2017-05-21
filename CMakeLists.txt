@@ -44,7 +44,9 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES} ${CXX_SOURCES})
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${LIBTORRENT_RB_LIBRARIES})
 
 # Find the thunarx extension dir
-execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE} --variable=extensionsdir thunarx-2 OUTPUT_VARIABLE THUNARX2_EXTENSIONS_DIR)
+execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE} --variable=extensionsdir thunarx-2
+                OUTPUT_VARIABLE THUNARX2_EXTENSIONS_DIR
+                OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 # Install the library to the extensions directory
 install(TARGETS ${PROJECT_NAME} DESTINATION ${THUNARX2_EXTENSIONS_DIR})

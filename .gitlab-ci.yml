@@ -23,7 +23,7 @@ stages:
 build:archlinux-gcc:
   image: base/devel
   before_script:
-    - $PACMAN_INSTALL cmake libtorrent-rasterbar thunar gtk2
+    - $PACMAN_INSTALL cmake libtorrent-rasterbar thunar gtk2 boost
   <<: *build
 
 build:ubuntu-gcc:
