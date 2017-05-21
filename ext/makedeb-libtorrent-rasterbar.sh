@@ -19,11 +19,11 @@ apt-get install --no-install-recommends -y $REQUIREMENTS
 
 curl -SsL $ARCHIVE | tar xzv
 
-mkdir $DEBDIR
+mkdir -p ${DEBDIR}/usr
 
 cd $SRCDIR
 ./bootstrap.sh
-./configure --prefix=$DEBDIR
+./configure --prefix=$DEBDIR/usr
 make -j$(nproc)
 make install
 cd ..
@@ -31,7 +31,7 @@ cd ..
 
 
 mkdir -p ${DEBDIR}/DEBIAN
-mkdir -p ${DEBDIR}/lib/pkgconfig
+mkdir -p ${DEBDIR}/usr/lib/pkgconfig
 
 
 cat > ${DEBDIR}/DEBIAN/control <<EOF
@@ -48,7 +48,7 @@ EOF
 
 
 
-cat > ${DEBDIR}/lib/pkgconfig/libtorrent-rasterbar.pc <<EOF
+cat > ${DEBDIR}/usr/lib/pkgconfig/libtorrent-rasterbar.pc <<EOF
 
 prefix=/usr
 exec_prefix=\${prefix}
