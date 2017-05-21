@@ -1,0 +1,33 @@
+## SETUP
+
+variables:
+  GIT_STRATEGY: clone
+
+stages:
+  - build
+
+## BUILD
+
+.build: &build
+  stage: build
+  script:
+    - mkdir -p build && cd build
+    - cmake ..
+    - make && make install
+
+build:archlinux:
+  image: base/archlinux
+  before_script:
+    - pacman -Syy
+    - pacman -S libtorrent-rasterbar thunar gtk2
+  <<: *build
+
+build:ubuntu:
+  image: base/ubuntu
+  before_script:
+    - cd ext && bash makedeb-libtorrent-rasterbar.sh && cd ..
+    - dkpg -i ext/libtorrent-rasterbar-git.deb
+    - apt-get install -y --no-install-recommends
+      cmake libthunarx-2-dev libgtk2.0-dev libboost-filesystem-dev
+      libboost-system-dev libglib2.0-dev
+  <<: *build
