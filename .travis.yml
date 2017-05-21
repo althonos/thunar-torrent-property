@@ -2,17 +2,25 @@ sudo: required
 dist: trusty
 language: C
 
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:ubuntu-toolchain-r/test'
+    packages:
+      - gcc-5
+      - g++-5
+
 cache:
   directories:
   - ext
 
 compiler:
-- clang
 - gcc
+# - clang
 
-matrix:
-  allow_failures:
-  - compiler: clang
+# matrix:
+#   allow_failures:
+#   - compiler: clang
 
 before_install:
 - sudo apt-get -qq update

@@ -32,7 +32,8 @@ link_directories(${Boost_LIBRARY_DIRS})
 add_definitions(${GTK2_CFLAGS_OTHER})
 add_definitions(${GLIB2_CFLAGS_OTHER})
 add_definitions(${THUNARX_CFLAGS_OTHER})
-
+add_definitions(${LIBTORRENT_RB_CFLAGS_OTHER})
+add_definitions(${Boost_CFLAGS_OTHER})
 
 # Find source files
 file(GLOB SOURCES src/*.c)
