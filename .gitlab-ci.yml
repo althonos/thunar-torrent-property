@@ -7,6 +7,7 @@ variables:
   GIT_STRATEGY: clone
   PACMAN_INSTALL: pacman -Syq --noconfirm --noprogressbar
   APTGET_INSTALL: apt-get install -y --no-install-recommends
+  LIBTORRENT_DEB: https://github.com/althonos/thunar-torrent-property/releases/download/v0.1.0/libtorrent-rasterbar_1.1.3_amd64.deb
 
 stages:
   - build
@@ -33,7 +34,7 @@ build:ubuntu-gcc:
     - apt-get update -qq
     - $APTGET_INSTALL cmake libthunarx-2-dev libgtk2.0-dev
       libboost-filesystem-dev libboost-system-dev libglib2.0-dev
-      build-essential curl ca-certificates
-    - curl -SsL https://github.com/althonos/thunar-torrent-property/releases/download/v0.1.0/libtorrent-rasterbar_1.1.3_amd64.deb >
-      libtorrent-rasterbar.deb && dpkg -i libtorrent-rasterbar.deb
+      build-essential libssl-dev
+    - $APTGET_INSTALL curl ca-certificates
+    - curl -SsL $LIBTORRENT_DEB > libtorrent.deb && dpkg -i libtorrent.deb
   <<: *build
