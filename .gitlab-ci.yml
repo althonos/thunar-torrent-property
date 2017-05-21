@@ -21,9 +21,9 @@ stages:
     - make && make install
 
 build:archlinux-gcc:
-  image: base/archlinux
+  image: base/devel
   before_script:
-    - $PACMAN_INSTALL cmake make libtorrent-rasterbar thunar gtk2 gcc
+    - $PACMAN_INSTALL cmake libtorrent-rasterbar thunar gtk2
   <<: *build
 
 build:ubuntu-gcc:
@@ -32,6 +32,6 @@ build:ubuntu-gcc:
     - apt-get update -qq
     - cd ext && bash makedeb-libtorrent-rasterbar.sh && cd ..
     - dpkg -i ext/libtorrent-rasterbar-git.deb
-    - $APT_GET_INSTALL cmake libthunarx-2-dev libgtk2.0-dev
+    - $APTGET_INSTALL cmake libthunarx-2-dev libgtk2.0-dev
       libboost-filesystem-dev libboost-system-dev libglib2.0-dev
   <<: *build
