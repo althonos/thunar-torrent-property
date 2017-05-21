@@ -9,9 +9,11 @@ compiler:
 
 before_install:
   - sudo apt-get -qq update
+  - cd ext && sudo bash makedeb-libtorrent-rasterbar.sh
+      && sudo dpkg -i libtorrent-rasterbar-git.deb && cd ..
   - sudo apt-get install -y --no-install-recommends
-      cmake libthunarx-2-dev libgtk2.0-dev libtorrent-rasterbar-dev
-      libboost-filesystem-dev libboost-system-dev
+      cmake libthunarx-2-dev libgtk2.0-dev libboost-filesystem-dev
+      libboost-system-dev
 
 install:
   - mkdir build && cd build
