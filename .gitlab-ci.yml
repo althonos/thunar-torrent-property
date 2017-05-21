@@ -18,13 +18,14 @@ stages:
 build:archlinux:
   image: base/archlinux
   before_script:
-    - pacman -Syy
-    - pacman -S libtorrent-rasterbar thunar gtk2 --noconfirm
+    - pacman -Syq
+    - pacman -S libtorrent-rasterbar thunar gtk2 --noconfirm --noprogressbar
   <<: *build
 
 build:ubuntu:
   image: library/ubuntu
   before_script:
+    - apt-get update -qq
     - cd ext && bash makedeb-libtorrent-rasterbar.sh && cd ..
     - dkpg -i ext/libtorrent-rasterbar-git.deb
     - apt-get install -y --no-install-recommends
