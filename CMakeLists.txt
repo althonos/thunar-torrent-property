@@ -3,7 +3,7 @@ project(thunar-torrent-property)
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 # Minimum version of cmake required to build this project
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
 # Use packageconfig to detect headers & library files
 find_package(PkgConfig REQUIRED)
@@ -42,6 +42,11 @@ file(GLOB CXX_SOURCES src/wrappers/*.cpp)
 # Add a shared library
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${CXX_SOURCES})
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${LIBTORRENT_RB_LIBRARIES})
+
+# Add C/C++ features constraints
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_range_for)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_auto_type)
+
 
 # Find the thunarx extension dir
 execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE} --variable=extensionsdir thunarx-2
