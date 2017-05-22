@@ -8,6 +8,7 @@ variables:
   PACMAN_INSTALL: pacman -Syq --noconfirm --noprogressbar
   APTGET_INSTALL: apt-get install -y --no-install-recommends
   LIBTORRENT_DEB: https://github.com/althonos/thunar-torrent-property/releases/download/v0.1.0/libtorrent-rasterbar_1.1.3_amd64.deb
+  DNF_INSTALL: dnf install -y --refresh
 
 stages:
   - build
@@ -37,4 +38,12 @@ build:ubuntu-gcc:
       build-essential libssl-dev
     - $APTGET_INSTALL curl ca-certificates
     - curl -SsL $LIBTORRENT_DEB > libtorrent.deb && dpkg -i libtorrent.deb
+  <<: *build
+
+build:fedora-gcc:
+  image: library/fedora
+  allow_failure: true
+  before_script:
+    - $DNF_INSTALL gtk+-devel boost-devel cmake gcc Thunar-devel
+      rb_libtorrent-devel
   <<: *build
