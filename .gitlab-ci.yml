@@ -45,5 +45,5 @@ build:fedora-gcc:
   allow_failure: true
   before_script:
     - $DNF_INSTALL gtk+-devel boost-devel cmake gcc Thunar-devel
-      rb_libtorrent-devel
+      rb_libtorrent-devel make gcc-c++
   <<: *build
