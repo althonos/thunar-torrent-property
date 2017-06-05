@@ -28,7 +28,9 @@ static void torrent_page_set_trackers(TorrentPage* page, int size, char** tracke
 
   GtkTreeIter iter;
   for (int i=0; i < size; i++) {
-    g_message(trackers[i]);
+    #ifndef NDEBUG
+      g_message(trackers[i]);
+    #endif
     gtk_list_store_append(GTK_LIST_STORE(new_list_store), &iter);
     gtk_list_store_set(GTK_LIST_STORE(new_list_store), &iter, 0, trackers[i], -1);
   }

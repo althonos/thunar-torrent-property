@@ -31,7 +31,9 @@ extern TorrentStatus* torrent_status_from_thunarx_file_info(ThunarxFileInfo* inf
 
 
 extern TorrentStatus* torrent_status_from_torrent_file(const char* filename) {
-        g_message("Creating TorrentStatus from torrent file...");
+        #ifndef NDEBUG
+            g_message("Creating TorrentStatus from torrent file...");
+        #endif
 
         libtorrent::time_duration timeout = libtorrent::seconds(10);
         std::error_code ec;
@@ -56,9 +58,13 @@ extern TorrentStatus* torrent_status_from_torrent_file(const char* filename) {
         }
 
         /* Scrape the tracker to get the number of peers */
-        std::cout << std::endl << "Scraping trackers...";
+        #ifndef NDEBUG
+            std::cout << std::endl << "Scraping trackers...";
+        #endif
         handle.scrape_tracker();
-        std::cout << "Request sent." << std::endl;
+        #ifndef NDEBUG
+            std::cout << "Request sent." << std::endl;
+        #endif
 
         libtorrent::scrape_failed_alert* tpf;
         libtorrent::scrape_reply_alert* tpr;
@@ -77,9 +83,11 @@ extern TorrentStatus* torrent_status_from_torrent_file(const char* filename) {
         status->seeders = handle.status().num_complete;
         status->leechers = handle.status().num_incomplete;
 
-        std::cout << "Num Peers      : " << handle.status().num_peers << std::endl;
-        std::cout << "Num Complete   : " << handle.status().num_complete << std::endl;
-        std::cout << "Nump Incomplete: " << handle.status().num_incomplete << std::endl;
+        #ifndef NDEBUG
+            std::cout << "Num Peers      : " << handle.status().num_peers << std::endl;
+            std::cout << "Num Complete   : " << handle.status().num_complete << std::endl;
+            std::cout << "Nump Incomplete: " << handle.status().num_incomplete << std::endl;
+        #endif
 
         return status;
 }

@@ -34,7 +34,9 @@ static void torrent_page_set_files(TorrentPage* page, long int size, char** file
 
   GtkTreeIter iter;
   for (int i=0; i < size; i++) {
-    g_message(files[i]);
+    #ifndef NDEBUG
+      g_message(files[i]);
+    #endif
     gtk_list_store_append(GTK_LIST_STORE(new_list_store), &iter);
     gtk_list_store_set(GTK_LIST_STORE(new_list_store), &iter, 0, files[i], 1, sizes[i], -1);
   }

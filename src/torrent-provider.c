@@ -78,17 +78,25 @@ static void torrent_provider_prefs_provider_init(ThunarxPreferencesProviderIface
 static GList* torrent_provider_get_pages (ThunarxPropertyPageProvider *property_page_provider,
                                           GList *files) {
   if (g_list_length (files) != 1) {
-    g_warning("MULTIPLE FILES SELECTED");
+    #ifndef NDEBUG
+      g_warning("MULTIPLE FILES SELECTED");
+    #endif
     return NULL;
   } else if (!thunarx_file_info_has_mime_type(files->data, "application/x-bittorrent")) {
-    g_warning("NOT A TORRENT FILE");
+    #ifndef NDEBUG
+      g_warning("NOT A TORRENT FILE");
+    #endif
     return NULL;
   }
 
-  g_message("TORRENT FILE OK !");
+  #ifndef NDEBUG
+    g_message("TORRENT FILE OK !");
+  #endif
 
   GtkWidget* torrent_page = torrent_page_new(files->data);
 
-  g_message("Appending TorrentPage to GList");
+  #ifndef NDEBUG
+    g_message("Appending TorrentPage to GList");
+  #endif
   return g_list_append(NULL, (gpointer) torrent_page);//torrent_page_new(files->data));
 }

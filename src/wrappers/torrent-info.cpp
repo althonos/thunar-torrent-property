@@ -56,7 +56,9 @@ extern TorrentInfo* torrent_info_from_torrent_file(const char* filename) {
     for (int i=0; i < info->filesc; i++) {
         info->filesv[i] = strdup(ti.files().file_path(i).c_str());
         info->sizev[i] = ti.files().file_size(i);
-        g_message("%s (%i B)", info->filesv[i], info->sizev[i]);
+        #ifndef NDEBUG
+            g_message("%s (%i B)", info->filesv[i], info->sizev[i]);
+        #endif
     }
 
     /* Return the updated struct */

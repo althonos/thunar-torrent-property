@@ -59,7 +59,9 @@ G_MODULE_EXPORT void thunar_extension_initialize (ThunarxProviderPlugin *plugin)
 // 	g_message ("Initializing thunar-shares-plugin extension");
 // #endif
 
-  g_message ("Initializing torrent-property-plugin extension");
+  #ifndef NDEBUG
+    g_message ("Initializing torrent-property-plugin extension");
+  #endif
 
 	/* register the types provided by this plugin */
 	torrent_page_register_type (plugin);
@@ -71,7 +73,9 @@ G_MODULE_EXPORT void thunar_extension_initialize (ThunarxProviderPlugin *plugin)
 
 
 G_MODULE_EXPORT void thunar_extension_shutdown (void) {
-	g_message ("Shutting down thunar-shares-plugin extension");
+  #ifndef NDEBUG
+	 g_message ("Shutting down thunar-shares-plugin extension");
+  #endif
 }
 
 

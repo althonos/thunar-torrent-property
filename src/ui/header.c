@@ -1,6 +1,8 @@
 
 static void torrent_page_set_title(TorrentPage* page, char* title) {
-  g_message("Setting title: %s", title);
+  #ifndef NDEBUG
+    g_message("Setting title: %s", title);
+  #endif
   gtk_label_set_text(GTK_LABEL(page->title), title);
 }
 
@@ -35,13 +37,18 @@ static void torrent_page_update_torrent_status(gpointer args) {
   ThunarxFileInfo* info = torrent_page_get_file(page);
   TorrentInfo* torrent_info = torrent_info_from_thunarx_file_info(info);
 
-  g_message("IN THREAD: Updating stats of %s", torrent_info->name);
+  #ifndef NDEBUG
+    g_message("IN THREAD: Updating stats of %s", torrent_info->name);
+  #endif
 
   TorrentStatus* status = torrent_status_from_thunarx_file_info(THUNARX_FILE_INFO(info));
   torrent_page_set_seeders_value(TORRENT_PAGE(page), status->seeders);
   torrent_page_set_leechers_value(TORRENT_PAGE(page), status->leechers);
-  g_message("Seeders: %i", status->seeders);
-  g_message("Leechers: %i", status->leechers);
+
+  #ifndef NDEBUG
+    g_message("Seeders: %i", status->seeders);
+    g_message("Leechers: %i", status->leechers);
+  #endif
 
   gtk_widget_set_sensitive(page->refresh, TRUE);
 
