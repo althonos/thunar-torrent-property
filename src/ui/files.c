@@ -13,7 +13,6 @@ static GtkWidget* torrent_page_new_files_view(TorrentPage* page) {
   GtkWidget* tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
   g_object_unref(G_OBJECT(store));
 
-
   GtkTreeViewColumn* column;
   // column = gtk_tree_view_column_new_with_attributes("Icon", icon_renderer, "icon_name", 0, NULL);
   // gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
