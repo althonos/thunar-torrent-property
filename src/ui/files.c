@@ -51,21 +51,12 @@ static void fill_tree_store(Entry* entry, GtkTreeIter* parent, GtkTreeStore* sto
 
 
 
-static void torrent_page_set_files(TorrentPage* page, long int size, char** files, long int* sizes) {
+static void torrent_page_set_files(TorrentPage* page, Filesystem* fs) {
 
   //GtkListStore* new_list_store = gtk_list_store_new(3, GTK_TYPE_STRING, GTK_TYPE_STRING, GTK_TYPE_STRING);
   GtkTreeStore* new_store = gtk_tree_store_new(2, GTK_TYPE_STRING, GTK_TYPE_LONG);
 
   gtk_tree_view_set_model(GTK_TREE_VIEW(page->files), NULL);
-
-
-  Filesystem* fs = filesystem_new();
-  for (int i=0; i < size; i++) {
-    #ifndef NDEBUG
-      g_message(files[i]);
-    #endif
-    filesystem_add_file(fs, files[i], sizes[i]);
-  }
 
   fill_tree_store(fs->root->child, NULL, new_store);
 

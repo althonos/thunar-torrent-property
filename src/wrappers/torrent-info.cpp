@@ -17,6 +17,7 @@
 #include <libtorrent/add_torrent_params.hpp>
 
 #include "torrent-info.h"
+#include "../utils/fs.h"
 
 
 // FIXME: DEBUG
@@ -49,16 +50,18 @@ extern TorrentInfo* torrent_info_from_torrent_file(const char* filename) {
         info->trackerc += 1;
     }
 
-    /* Put the files in an array of char* */
-    info->filesc = ti.files().num_files();
-    info->filesv = (char**) malloc(info->filesc * sizeof(char*));
-    info->sizev = (long*) malloc(info->filesc * sizeof(long));
-    for (int i=0; i < info->filesc; i++) {
-        info->filesv[i] = strdup(ti.files().file_path(i).c_str());
-        info->sizev[i] = ti.files().file_size(i);
+    info->files = filesystem_new();
+    for (int i=0; i < ti.files().num_files(); i++) {
         #ifndef NDEBUG
-            g_message("%s (%i B)", info->filesv[i], info->sizev[i]);
+        g_message("%s (%i B)",
+                  ti.files().file_path(i).c_str(),
+                  ti.files().file_size(i));
         #endif
+
+        filesystem_add_file(
+            info->files,
+            ti.files().file_path(i).c_str(),
+            ti.files().file_size(i));
     }
 
     /* Return the updated struct */
@@ -87,10 +90,12 @@ extern void torrent_info_delete(TorrentInfo* info) {
         free(info->trackerv[i]);
     free(info->trackerv);
 
-    for (int i=0; i < info->filesc; i++)
-        free(info->filesv[i]);
-    free(info->filesv);
-    free(info->sizev);
+    // for (int i=0; i < info->filesc; i++)
+    //     free(info->filesv[i]);
+    // free(info->filesv);
+    // free(info->sizev);
+
+    filesystem_free(info->files);
 
     free(info);
 }

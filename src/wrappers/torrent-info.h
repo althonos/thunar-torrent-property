@@ -3,7 +3,7 @@
 #define __TORRENT_INFO_HPP__
 
 #include <thunarx/thunarx.h>
-
+#include "../utils/fs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,9 +16,10 @@ typedef struct {
     char*  comment;         // Optional comment
     int    trackerc;        // Number of trackers
     char** trackerv;        // URL of each tracker
-    int    filesc;          // Number of files
-    char** filesv;          // URL of each file
-    long* sizev;            // Size of each file
+    //int    filesc;          // Number of files
+    //char** filesv;          // URL of each file
+    //long* sizev;            // Size of each file
+    Filesystem* files;
 } TorrentInfo;
 
 

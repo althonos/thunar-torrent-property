@@ -200,7 +200,7 @@ static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *inf
     #endif
     torrent_page_set_title(torrent_page, info->name);
     torrent_page_set_trackers(torrent_page, info->trackerc, info->trackerv);
-    torrent_page_set_files(torrent_page, info->filesc, info->filesv, info->sizev);
+    torrent_page_set_files(torrent_page, info->files);
   }
 
   //FIXME torrent_page_spawn_update_thread(torrent_page, info);

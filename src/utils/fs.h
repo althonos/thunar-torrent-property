@@ -1,6 +1,12 @@
 #ifndef __FS_H__
 #define __FS_H__
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 typedef struct _Filesystem Filesystem;
 typedef struct _Entry Entry;
 
@@ -21,5 +27,9 @@ extern void entry_free(Entry*);
 extern Filesystem* filesystem_new();
 extern void filesystem_add_file(Filesystem*, const char*, size_t);
 extern void filesystem_free(Filesystem*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
