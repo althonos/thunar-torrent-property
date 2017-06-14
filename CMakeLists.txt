@@ -36,7 +36,7 @@ add_definitions(${LIBTORRENT_RB_CFLAGS_OTHER})
 add_definitions(${Boost_CFLAGS_OTHER})
 
 # Find source files
-file(GLOB SOURCES src/*.c)
+file(GLOB SOURCES src/*.c src/utils/*.c)
 file(GLOB CXX_SOURCES src/wrappers/*.cpp)
 
 # Add a shared library

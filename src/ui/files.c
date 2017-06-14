@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <gio/gio.h>
 
+#include "../utils/fs.h"
+
 
 static GtkWidget* torrent_page_new_files_view(TorrentPage* page) {
 
@@ -29,75 +31,6 @@ static GtkWidget* torrent_page_new_files_view(TorrentPage* page) {
 
 
 
-
-
-typedef struct _Entry Entry;
-struct _Entry{
-  Entry* child;
-  Entry* brother;
-  char* name;
-  size_t size;
-};
-
-static Entry* new_entry(char* name) {
-  Entry* entry = (Entry*) malloc(sizeof(Entry));
-  entry->child = NULL;
-  entry->brother = NULL;
-  entry->name = strdup(name);
-  entry->size = 0;
-  return entry;
-}
-
-static void add_entry(Entry* root, char* path, size_t size) {
-
-  Entry* entry = root;
-  char* path_copy = strdup(path);
-
-  char* partial_name = strtok(path_copy, "/");
-  while (partial_name != NULL) {
-    printf ("%s\n",partial_name);
-
-    if (entry->child == NULL) {
-      entry->child = new_entry(partial_name);
-      entry = entry->child;
-
-    } else if (strcmp(entry->child->name, partial_name) == 0){
-      entry = entry->child;
-
-    } else {
-
-      Entry* brother = entry->child;
-
-      while ((brother->brother != NULL) && (strcmp(brother->brother->name, partial_name) != 0)) {
-        brother = brother->brother;
-      }
-
-      if (brother->brother == NULL)
-        brother->brother = new_entry(partial_name);
-
-      entry = brother->brother;
-    }
-
-    char* aux = partial_name;
-    partial_name = strtok (NULL, "/");
-  }
-
-  free(path_copy);
-  entry->size = size;
-}
-
-static void free_entry(Entry* entry) {
-  free(entry->name);
-
-  if ((entry->child) != NULL)
-    free(entry->child);
-  if ((entry->brother) != NULL)
-    free(entry->brother);
-
-  free(entry);
-}
-
-
 static void fill_tree_store(Entry* entry, GtkTreeIter* parent, GtkTreeStore* store) {
 
   printf("Adding %s to tree store\n", entry->name);
@@ -118,8 +51,6 @@ static void fill_tree_store(Entry* entry, GtkTreeIter* parent, GtkTreeStore* sto
 
 
 
-
-
 static void torrent_page_set_files(TorrentPage* page, long int size, char** files, long int* sizes) {
 
   //GtkListStore* new_list_store = gtk_list_store_new(3, GTK_TYPE_STRING, GTK_TYPE_STRING, GTK_TYPE_STRING);
@@ -127,47 +58,18 @@ static void torrent_page_set_files(TorrentPage* page, long int size, char** file
 
   gtk_tree_view_set_model(GTK_TREE_VIEW(page->files), NULL);
 
-  Entry* root = new_entry("/");
+
+  Filesystem* fs = filesystem_new();
   for (int i=0; i < size; i++) {
     #ifndef NDEBUG
       g_message(files[i]);
     #endif
-    add_entry(root, files[i], sizes[i]);
+    filesystem_add_file(fs, files[i], sizes[i]);
   }
 
-  fill_tree_store(root->child, NULL, new_store);
+  fill_tree_store(fs->root->child, NULL, new_store);
 
   gtk_tree_view_set_model(GTK_TREE_VIEW(page->files), GTK_TREE_MODEL(new_store));
   g_object_unref(G_OBJECT(new_store));
-  free(root);
+  filesystem_free(fs);
 }
-
-
-
-
-
-
-//
-//
-// const char *file_name = "test.html";
-//   gboolean is_certain = FALSE;
-//
-//   char *content_type = g_content_type_guess (file_name, NULL, 0, &is_certain);
-//
-//   if (content_type != NULL)
-//     {
-//       char *mime_type = g_content_type_get_mime_type (content_type);
-//
-//       g_print ("Content type for file '%s': %s (certain: %s)\n"
-//                "MIME type for content type: %s\n",
-//                file_name,
-//                content_type,
-//                is_certain ? "yes" : "no",
-//                mime_type);
-//
-//       g_free (mime_type);
-//     }
-//
-//   g_free (content_type);
-//
-//   return EXIT_SUCCESS;
