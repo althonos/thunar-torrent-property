@@ -61,7 +61,7 @@ build:fedora-gcc:
   <<: *build
 
 build:ubuntu-yakkety-gcc:
-  image: library/ubuntu:yaketty
+  image: library/ubuntu:yakkety
   <<: *build-ubuntu
 
 build:ubuntu-zesty-gcc:
