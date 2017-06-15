@@ -22,23 +22,21 @@ stages:
     - cmake ..
     - make && make install
 
+
+###################
+# ARCHLINUX       #
+###################
+
 build:archlinux-gcc:
   image: base/devel
   before_script:
     - $PACMAN_INSTALL cmake libtorrent-rasterbar thunar gtk2 boost
   <<: *build
 
-build:ubuntu-gcc:
-  image: library/ubuntu
-  allow_failure: true
-  before_script:
-    - apt-get update -qq
-    - $APTGET_INSTALL cmake libthunarx-2-dev libgtk2.0-dev
-      libboost-filesystem-dev libboost-system-dev libglib2.0-dev
-      build-essential libssl-dev
-    - $APTGET_INSTALL curl ca-certificates
-    - curl -SsL $LIBTORRENT_DEB > libtorrent.deb && dpkg -i libtorrent.deb
-  <<: *build
+
+###################
+# FEDORA          #
+###################
 
 build:fedora-gcc:
   image: library/fedora
@@ -47,3 +45,29 @@ build:fedora-gcc:
     - $DNF_INSTALL gtk+-devel boost-devel cmake gcc Thunar-devel
       rb_libtorrent-devel make gcc-c++
   <<: *build
+
+
+###################
+# UBUNTU          #
+###################
+
+.build-ubuntu: &build-ubuntu
+  allow_failure: true
+  before_script:
+    - apt-get update -qq
+    - $APTGET_INSTALL cmake libthunarx-2-dev libgtk2.0-dev
+      libboost-filesystem-dev libboost-system-dev libglib2.0-dev
+      build-essential libssl-dev libtorrent-rasterbar-dev
+  <<: *build
+
+build:ubuntu-yakkety-gcc:
+  image: library/ubuntu:yaketty
+  <<: *build-ubuntu
+
+build:ubuntu-zesty-gcc:
+  image: library/ubuntu:zesty
+  <<: *build-ubuntu
+
+build:ubuntu-artful-gcc:
+  image: library/ubuntu:artful
+  <<: *build-ubuntu
