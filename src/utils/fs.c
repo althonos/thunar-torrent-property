@@ -60,10 +60,11 @@ extern void filesystem_add_file(Filesystem* fs, const char* path, size_t size) {
     }
 
     partial_name = strtok(NULL, "/");
+    entry->size += size;
   }
 
   // The last created entry is the file we wanted.
-  entry->size = size;
+  //entry->size = size;
   free(path_copy);
 }
 
