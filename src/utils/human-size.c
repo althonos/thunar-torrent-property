@@ -11,9 +11,9 @@ char* human_size(double size) {
         i++;
     }
 
-    int bufsize = snprintf(NULL, 0, "%.*f %s", i, size, units[i]);
+    int bufsize = snprintf(NULL, 0, "%.1f %s", size, units[i]);
     char* buf = malloc(bufsize + 1);
-    sprintf(buf, "%.*f %s", i, size, units[i]);
+    sprintf(buf, "%.1f %s", size, units[i]);
 
     return buf;
 }

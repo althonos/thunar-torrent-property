@@ -12,8 +12,7 @@ static GtkWidget* torrent_page_new_files_view(TorrentPage* page) {
   GtkCellRenderer* renderer = gtk_cell_renderer_text_new();
   GtkCellRenderer* icon_renderer = gtk_cell_renderer_pixbuf_new();
   GtkWidget* window = gtk_scrolled_window_new(NULL, NULL);
-  GtkTreeStore* store = gtk_list_store_new(3, G_TYPE_ICON, G_TYPE_STRING, G_TYPE_STRING);
-  //GtkListStore* store = gtk_list_store_new(2, G_TYPE_STRING, GTK_TYPE_LONG);
+  GtkTreeStore* store = gtk_tree_store_new(3, G_TYPE_ICON, G_TYPE_STRING, G_TYPE_STRING);
   GtkWidget* tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
   g_object_unref(G_OBJECT(store));
 
