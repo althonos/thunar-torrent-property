@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <stdio.h>
+
 #include "human-size.h"
 
 char* human_size(double size) {
