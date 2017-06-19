@@ -90,11 +90,6 @@ extern void torrent_info_delete(TorrentInfo* info) {
         free(info->trackerv[i]);
     free(info->trackerv);
 
-    // for (int i=0; i < info->filesc; i++)
-    //     free(info->filesv[i]);
-    // free(info->filesv);
-    // free(info->sizev);
-
     filesystem_free(info->files);
 
     free(info);

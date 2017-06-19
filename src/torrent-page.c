@@ -137,7 +137,7 @@ GtkWidget* torrent_page_new (ThunarxFileInfo *file) {
 
   TorrentInfo *info = torrent_info_from_thunarx_file_info(file);
   torrent_page_update_info(page, info);
-  // FIXME: torrent_info_delete(info);
+  torrent_info_delete(info);
 
   return GTK_WIDGET (page);
 }
@@ -204,7 +204,5 @@ static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *inf
   }
 
   //FIXME torrent_page_spawn_update_thread(torrent_page, info);
-
-
 
 }
