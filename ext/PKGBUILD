@@ -1,0 +1,35 @@
+# $Id$
+# Maintainer: AndyRTR <andyrtr@archlinux.org>
+# Contributor: Andrea Scarpino <andrea@archlinux.org>
+
+pkgname=thunar-torrent-property-git
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="A small thunar extension displaying the metadata in a torrent file"
+url="https://github.com/althonos/thunar-torrent-property"
+arch=('i686' 'x86_64')
+license=('GPL3')
+conflicts=(${pkgname%-git})
+provides=(${pkgname%-git})
+depends=('gtk2' 'libtorrent-rasterbar' 'thunar' 'boost')
+makedepends=('cmake' 'gcc')
+optdepends=()
+source=(git+${url})
+sha256sums=('SKIP')
+validpgpkeys=()
+
+prepare() {
+  cd ${pkgname%-git}
+  mkdir build
+}
+
+build() {
+  cd ${pkgname%-git}/build
+  cmake -DCMAKE_BUILD_TYPE=Release ..
+  make
+}
+
+package() {
+  cd ${pkgname%-git}/build
+  make DESTDIR="${pkgdir}" install
+}
