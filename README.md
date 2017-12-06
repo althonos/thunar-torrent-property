@@ -27,8 +27,9 @@
 
 #### Build
 
-* `cmake` and `make`
-* a `C` and `C++` compiler (at the moment, only `gcc` and `g++` are supported)
+* `cmake`
+* `make` or `Ninja`
+* a `C` and `C++` compiler (at the moment, only `gcc` is actively supported)
 
 
 #### Runtime dependencies
@@ -65,15 +66,30 @@ dnf install gtk+-devel boost-devel cmake gcc Thunar-devel \
 
 ### Building from source
 
-This project uses `CMake`, so run the following:
+This project uses `CMake`. Start by creating a directory to do an
+an out-of-source build:
 ```
-mkdir build && cd build
+mkdir build
+cd build
+```
+
+###### Ninja
+
+```
+cmake .. -GNinja
+ninja
+sudo ninja install
+```
+
+###### Make
+```
 cmake ..
 make
 sudo make install
 ```
 
-This will install a single file, `thunar-torrent-property.so`, in the
-`extensions` directory of **Thunar** (you can check where that directory
-is running `pkg-config --variable=extensionsdir thunarx-2`, most of the
-time it will be `/usr/lib/thunarx-2` or `/lib/thunarx-2`).
+
+Both commands will install a single file, `thunar-torrent-property.so`,
+in the `extensions` directory of **Thunar** (you can check where that
+directory is running `pkg-config --variable=extensionsdir thunarx-2`,
+most of the time it will be `/usr/lib/thunarx-2` or `/lib/thunarx-2`).
