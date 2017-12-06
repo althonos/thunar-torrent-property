@@ -5,6 +5,11 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "")
 # Minimum version of cmake required to build this project
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
+# Set the default build type to release
+IF( NOT CMAKE_BUILD_TYPE )
+   SET( CMAKE_BUILD_TYPE Release ... FORCE )
+ENDIF()
+
 # Use packageconfig to detect headers & library files
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK2 REQUIRED gtk+-2.0)
