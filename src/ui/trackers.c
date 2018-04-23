@@ -23,7 +23,7 @@ static GtkWidget* torrent_page_new_trackers_view(TorrentPage* page) {
 
 static void torrent_page_set_trackers(TorrentPage* page, int size, char** trackers) {
 
-  GtkListStore* new_list_store = gtk_list_store_new (1, GTK_TYPE_STRING);
+  GtkListStore* new_list_store = gtk_list_store_new (1, G_TYPE_STRING);
   gtk_tree_view_set_model(GTK_TREE_VIEW(page->trackers), NULL); /* unrefs the old model */
 
   GtkTreeIter iter;
