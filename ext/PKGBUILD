@@ -1,6 +1,5 @@
-# $Id$
-# Maintainer: AndyRTR <andyrtr@archlinux.org>
-# Contributor: Andrea Scarpino <andrea@archlinux.org>
+# thunar-torrent-property-git
+# Maintainer:  Martin Larralde <martin.larralde@ens-paris-saclay.fr>
 
 pkgname=thunar-torrent-property-git
 pkgver=0.1.0
