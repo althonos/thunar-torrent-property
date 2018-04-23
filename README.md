@@ -7,6 +7,7 @@
 
 ## Features
 
+* Works with both `thunarx-2.0` and `thunarx-3.0`
 * Fetches the number of seeders / leechers currently available
 * Display a list of tracker URLs
 * Display the files described by the **torrent** file in a
@@ -73,6 +74,11 @@ mkdir build
 cd build
 ```
 
+By default, the target `thunarx` version is detected automatically
+using `pkg-config`. Set the `THUNARX_TARGET_VERSION` variable to
+2 or 3 to manually select the version to build against.
+
+
 ###### Ninja
 
 ```
@@ -91,5 +97,6 @@ sudo make install
 
 Both commands will install a single file, `thunar-torrent-property.so`,
 in the `extensions` directory of **Thunar** (you can check where that
-directory is running `pkg-config --variable=extensionsdir thunarx-2`,
-most of the time it will be `/usr/lib/thunarx-2` or `/lib/thunarx-2`).
+directory is running `pkg-config --variable=extensionsdir thunarx-X`,
+most of the time it will be `/usr/lib/thunarx-X` or `/lib/thunarx-X`)
+(where `X` is either `2` or `3` depending on your library version).
