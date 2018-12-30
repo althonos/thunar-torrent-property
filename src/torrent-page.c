@@ -58,25 +58,21 @@ static void torrent_page_class_init (TorrentPageClass *klass) {
 static void torrent_page_init (TorrentPage *page) {
 
   /* Create the container */
-  GtkWidget* container = gtk_vbox_new(FALSE, 3);
+  GtkWidget* container = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 
   /* Create the header */
   GtkWidget* header = torrent_page_new_header(page);
 
-  /* Create an homogeneous view container */
-  GtkWidget* view_container = gtk_vbox_new(TRUE, 3);
-
   /* Create the trackers TreeView */
   GtkWidget* trackers = torrent_page_new_trackers_view(page);
-  gtk_box_pack_start(GTK_BOX(view_container), trackers, TRUE, TRUE, 3);
 
   /* Create the files TreeView */
   GtkWidget* files = torrent_page_new_files_view(page);
-  gtk_box_pack_start(GTK_BOX(view_container), files, FALSE, TRUE, 3);
 
-  /* Create a non-homogeneous vertical box with the header & view container */
+  /* Create a non-homogeneous vertical box with the header, trackers & files */
   gtk_box_pack_start(GTK_BOX(container), header, FALSE, TRUE, 3);
-  gtk_box_pack_start(GTK_BOX(container), view_container, TRUE, TRUE, 3);
+  gtk_box_pack_start(GTK_BOX(container), trackers, TRUE, TRUE, 3);
+  gtk_box_pack_start(GTK_BOX(container), files, TRUE, TRUE, 3);
 
   /* Add the container to the page */
   gtk_container_add (GTK_CONTAINER(page), container);
