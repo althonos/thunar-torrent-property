@@ -1,10 +1,9 @@
-/* vim: set ts=4 sw=8 noet ai nocindent syntax=c: */
 /*
- * Copyright (C) 2009 Daniel Morales <daniel@daniel.com.uy>
+ * Copyright (C) 2017-2019 Martin Larralde <martin.larralde@ens-paris-saclay.fr>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of the
+ * published by the Free Software Foundation; either version 3 of the
  * License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,

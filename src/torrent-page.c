@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2017-2019 Martin Larralde <martin.larralde@ens-paris-saclay.fr>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <thunarx/thunarx.h>
@@ -179,26 +198,16 @@ void torrent_page_set_file (TorrentPage *torrent_page, ThunarxFileInfo *file) {
 
 
 /* File changed */
-static void torrent_page_file_changed (ThunarxFileInfo *file, gpointer user_data) {
+static void torrent_page_file_changed(ThunarxFileInfo *file, gpointer user_data) {
 
 }
 
-
-
 static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *info) {
-  #ifndef NDEBUG
-    g_message("Updating info");
-  #endif
-
+  g_debug("Updating info");
   if (info != NULL) {
-    #ifndef NDEBUG
-      g_message("%s", info->name);
-    #endif
+    g_debug("Torrent: %s", info->name);
     torrent_page_set_title(torrent_page, info->name);
     torrent_page_set_trackers(torrent_page, info->trackerc, info->trackerv);
     torrent_page_set_files(torrent_page, info->files);
   }
-
-  //FIXME torrent_page_spawn_update_thread(torrent_page, info);
-
 }

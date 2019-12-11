@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2017-2019 Martin Larralde <martin.larralde@ens-paris-saclay.fr>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -30,7 +49,6 @@ extern TorrentInfo* torrent_info_new() {
 
 
 extern TorrentInfo* torrent_info_from_torrent_file(const char* filename) {
-
     /* Create a new TorrentInfo */
     TorrentInfo* info = torrent_info_new();
 
@@ -58,12 +76,11 @@ extern TorrentInfo* torrent_info_from_torrent_file(const char* filename) {
 
     info->files = filesystem_new();
     for (int i=0; i < ti.files().num_files(); i++) {
-        #ifndef NDEBUG
-        g_message("%s (%i B)",
-                  ti.files().file_path(i).c_str(),
-                  ti.files().file_size(i));
-        #endif
-
+        g_debug(
+          "File: %s (%i B)",
+          ti.files().file_path(i).c_str(),
+          ti.files().file_size(i)
+        );
         filesystem_add_file(
             info->files,
             ti.files().file_path(i).c_str(),
@@ -87,7 +104,6 @@ extern TorrentInfo* torrent_info_from_thunarx_file_info(ThunarxFileInfo* info) {
 
 
 extern void torrent_info_delete(TorrentInfo* info) {
-    /* TODO */
     free(info->name);
     free(info->comment);
     free(info->creator);

@@ -1,10 +1,9 @@
-/* vim: set ts=4 sw=8 noet ai nocindent syntax=c: */
 /*
- * Copyright (C) 2009 Daniel Morales <daniel@daniel.com.uy>
+ * Copyright (C) 2017-2019 Martin Larralde <martin.larralde@ens-paris-saclay.fr>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of the
+ * published by the Free Software Foundation; either version 3 of the
  * License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -55,13 +54,7 @@ G_MODULE_EXPORT void thunar_extension_initialize (ThunarxProviderPlugin *plugin)
 // 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 // #endif
 
-// #ifdef G_ENABLE_DEBUG
-// 	g_message ("Initializing thunar-shares-plugin extension");
-// #endif
-
-  #ifndef NDEBUG
-    g_message ("Initializing torrent-property-plugin extension");
-  #endif
+  g_debug("Initializing torrent-property-plugin extension");
 
 	/* register the types provided by this plugin */
 	torrent_page_register_type (plugin);
