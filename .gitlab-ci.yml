@@ -60,14 +60,10 @@ build:fedora-gcc:
       build-essential libssl-dev libtorrent-rasterbar-dev
   <<: *build
 
-build:ubuntu-yakkety-gcc:
-  image: library/ubuntu:yakkety
+build:ubuntu-bionic-gcc:
+  image: library/ubuntu:bionic
   <<: *build-ubuntu
 
-build:ubuntu-zesty-gcc:
-  image: library/ubuntu:zesty
-  <<: *build-ubuntu
-
-build:ubuntu-artful-gcc:
-  image: library/ubuntu:artful
+build:ubuntu-focal-gcc:
+  image: library/ubuntu:focal
   <<: *build-ubuntu
