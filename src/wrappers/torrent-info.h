@@ -11,15 +11,13 @@ extern "C" {
 
 
 typedef struct {
-    char*  name;            // Name of the torrent
-    char*  creator;         // Software which created the torrent
-    char*  comment;         // Optional comment
-    int    trackerc;        // Number of trackers
-    char** trackerv;        // URL of each tracker
-    //int    filesc;          // Number of files
-    //char** filesv;          // URL of each file
-    //long* sizev;            // Size of each file
-    Filesystem* files;
+    char*         name;            // Name of the torrent
+    char*         creator;         // Software which created the torrent
+    char*         comment;         // Optional comment
+    unsigned char infohash[20];    // SHA-1 Infohash
+    int           trackerc;        // Number of trackers
+    char**        trackerv;        // URL of each tracker
+    Filesystem*   files;           // File hierarchy in the torrent
 } TorrentInfo;
 
 

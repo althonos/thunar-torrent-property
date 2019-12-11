@@ -42,6 +42,12 @@ extern TorrentInfo* torrent_info_from_torrent_file(const char* filename) {
     info->creator = strdup(ti.creator().c_str());
     info->comment = strdup(ti.comment().c_str());
 
+    /* Extract info hash as hexadecimal string */
+    libtorrent::sha1_hash infohash = ti.info_hash();
+    for (size_t i = 0; i < 20; ++i) {
+        info->infohash[i] = infohash[i];
+    }
+
     /* Put the trackers in an array of char* */
     info->trackerv = (char**) malloc(ti.trackers().size() * sizeof(char*));
     info->trackerc = 0;
