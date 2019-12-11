@@ -57,6 +57,13 @@ apt install cmake libthunarx-2-dev libgtk2.0-dev \
     build-essential libssl-dev libtorrent-rasterbar-dev
 ```
 
+###### Ubuntu **>= 19.04 (disco)**
+```
+apt install cmake libthunarx-3-dev libgtk2.0-dev \
+    libboost-filesystem-dev libboost-system-dev libglib2.0-dev \
+    build-essential libssl-dev libtorrent-rasterbar-dev
+```
+
 ###### Fedora
 
 ```
