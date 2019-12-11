@@ -31,7 +31,7 @@ char* human_size(double size) {
     }
 
     int bufsize = snprintf(NULL, 0, "%.1f %s", size, units[i]);
-    char* buf = malloc(bufsize + 1);
+    char* buf = g_malloc(bufsize + 1);
     sprintf(buf, "%.1f %s", size, units[i]);
 
     return buf;

@@ -44,7 +44,7 @@
 
 
 extern TorrentInfo* torrent_info_new() {
-    return (TorrentInfo*) malloc(sizeof(TorrentInfo));
+    return (TorrentInfo*) g_malloc(sizeof(TorrentInfo));
 }
 
 
@@ -67,7 +67,7 @@ extern TorrentInfo* torrent_info_from_torrent_file(const char* filename) {
     }
 
     /* Put the trackers in an array of char* */
-    info->trackerv = (char**) malloc(ti.trackers().size() * sizeof(char*));
+    info->trackerv = (char**) g_malloc(ti.trackers().size() * sizeof(char*));
     info->trackerc = 0;
     for(const auto& tracker: ti.trackers()) {
         info->trackerv[info->trackerc] = strdup(tracker.url.c_str());

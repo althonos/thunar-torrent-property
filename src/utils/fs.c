@@ -23,13 +23,13 @@
 
 
 extern Filesystem* filesystem_new() {
-    Filesystem* fs = (Filesystem*) malloc(sizeof(Filesystem));
+    Filesystem* fs = (Filesystem*) g_malloc(sizeof(Filesystem));
     fs->root = entry_new("/");
     return fs;
 }
 
 extern Entry* entry_new_with_size(const char* name, size_t size) {
-    Entry* entry = (Entry*) malloc(sizeof(Entry));
+    Entry* entry = (Entry*) g_malloc(sizeof(Entry));
     entry->child = NULL;
     entry->brother = NULL;
     entry->name = strdup(name);

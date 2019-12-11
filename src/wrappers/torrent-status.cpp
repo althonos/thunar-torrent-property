@@ -38,7 +38,7 @@
 
 
 extern TorrentStatus* torrent_status_new() {
-    return (TorrentStatus*) malloc(sizeof(TorrentStatus));
+    return (TorrentStatus*) g_malloc(sizeof(TorrentStatus));
 }
 
 
