@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <thunarx/thunarx.h>
 #include <boost/shared_ptr.hpp>
 #include <libtorrent/session.hpp>
@@ -35,19 +36,21 @@ extern TorrentStatus* torrent_status_from_torrent_file(const char* filename) {
             g_message("Creating TorrentStatus from torrent file...");
         #endif
 
-        libtorrent::time_duration timeout = libtorrent::seconds(10);
+        libtorrent::time_duration timeout = libtorrent::seconds(5);
         std::error_code ec;
         libtorrent::session session;
 
         /* Make the session show notification alerts */
         libtorrent::settings_pack sp;
         sp.set_int(libtorrent::settings_pack::alert_mask, libtorrent::alert::stats_notification);
+        sp.set_int(libtorrent::settings_pack::connections_limit, 0);
         session.apply_settings(sp);
 
         /* Prepare adding the torrent to the session */
         libtorrent::add_torrent_params params;
+
         params.ti = boost::make_shared<libtorrent::torrent_info>(std::string(filename));
-        params.flags += libtorrent::add_torrent_params::flags_t::flag_paused;
+        params.flags = libtorrent::add_torrent_params::flags_t::flag_paused;
 
         /* Get the torrent handle */
         libtorrent::torrent_handle handle = session.add_torrent(params);
@@ -71,7 +74,7 @@ extern TorrentStatus* torrent_status_from_torrent_file(const char* filename) {
         std::vector<libtorrent::alert*> alerts;
 
         do {
-            sleep(0.1);
+            while(gtk_events_pending()) gtk_main_iteration();
             session.pop_alerts(&alerts);
             for (auto* alert: alerts) {
                 tpf = libtorrent::alert_cast<libtorrent::scrape_failed_alert>(alert);

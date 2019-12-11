@@ -29,38 +29,25 @@ static void torrent_page_set_seeders_value(TorrentPage* page, int seeders) {
 };
 
 
-static void torrent_page_update_torrent_status(gpointer args) {
-
-  TorrentPage* page = args;
+static void torrent_page_update_torrent_status(TorrentPage* page) {
   gtk_widget_set_sensitive(page->refresh, FALSE);
 
   ThunarxFileInfo* info = torrent_page_get_file(page);
   TorrentInfo* torrent_info = torrent_info_from_thunarx_file_info(info);
 
-  #ifndef NDEBUG
-    g_message("IN THREAD: Updating stats of %s", torrent_info->name);
-  #endif
-
   TorrentStatus* status = torrent_status_from_thunarx_file_info(THUNARX_FILE_INFO(info));
   torrent_page_set_seeders_value(TORRENT_PAGE(page), status->seeders);
   torrent_page_set_leechers_value(TORRENT_PAGE(page), status->leechers);
-  free(status);
-
-  #ifndef NDEBUG
-    g_message("Seeders: %i", status->seeders);
-    g_message("Leechers: %i", status->leechers);
-  #endif
+  torrent_status_delete(status);
 
   gtk_widget_set_sensitive(page->refresh, TRUE);
-
-  g_thread_unref(g_thread_self());
 }
 
 
 static void torrent_page_on_refresh_clicked(GtkButton *button, gpointer callback_data) {
-  g_thread_new ("refresh-thread", (GThreadFunc) torrent_page_update_torrent_status,
-                callback_data);
+  torrent_page_update_torrent_status((TorrentPage*) callback_data);
 }
+
 
 static GtkWidget* torrent_page_new_header(TorrentPage* page) {
 
@@ -100,5 +87,4 @@ static GtkWidget* torrent_page_new_header(TorrentPage* page) {
   page->leechers = leechers_value;
 
   return header_hbox;
-  // return header_grid;
 }
