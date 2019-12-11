@@ -66,9 +66,7 @@ G_MODULE_EXPORT void thunar_extension_initialize (ThunarxProviderPlugin *plugin)
 
 
 G_MODULE_EXPORT void thunar_extension_shutdown (void) {
-  #ifndef NDEBUG
-	 g_message ("Shutting down thunar-shares-plugin extension");
-  #endif
+  g_debug("Shutting down torrent-property-plugin extension");
 }
 
 

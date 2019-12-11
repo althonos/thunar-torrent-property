@@ -23,10 +23,10 @@
 #include "torrent-page.h"
 
 
-struct _TorrentProvider
-{
+struct _TorrentProvider {
   GObject       __parent__;
 };
+
 
 THUNARX_DEFINE_TYPE_WITH_CODE(
   TorrentProvider,
@@ -34,68 +34,57 @@ THUNARX_DEFINE_TYPE_WITH_CODE(
   G_TYPE_OBJECT,
   THUNARX_IMPLEMENT_INTERFACE (
     THUNARX_TYPE_PROPERTY_PAGE_PROVIDER,
-    torrent_provider_page_provider_init)
+    torrent_provider_page_provider_init
+  )
   THUNARX_IMPLEMENT_INTERFACE (
     THUNARX_TYPE_PREFERENCES_PROVIDER,
-    torrent_provider_prefs_provider_init));
+    torrent_provider_prefs_provider_init
+  )
+);
 
 
-
-
-static void torrent_provider_class_init (TorrentProviderClass *klass) {
+static void
+torrent_provider_class_init (TorrentProviderClass *klass) {
   GObjectClass *gobject_class;
   gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->finalize = torrent_provider_finalize;
 }
 
 
-
-static void torrent_provider_init (TorrentProvider *torrent_provider) {
-
-}
+static void
+torrent_provider_init (TorrentProvider *torrent_provider) {}
 
 
-
-static void torrent_provider_finalize (GObject *object) {
+static void
+torrent_provider_finalize (GObject *object) {
   (*G_OBJECT_CLASS (torrent_provider_parent_class)->finalize) (object);
 }
 
 
-
-static void torrent_provider_page_provider_init(ThunarxPropertyPageProviderIface *iface) {
+static void
+torrent_provider_page_provider_init(ThunarxPropertyPageProviderIface *iface) {
   iface->get_pages = torrent_provider_get_pages;
 }
 
 
-
-static void torrent_provider_prefs_provider_init(ThunarxPreferencesProviderIface *iface) {
-
-}
+static void
+torrent_provider_prefs_provider_init(ThunarxPreferencesProviderIface *iface) {}
 
 
-
-static GList* torrent_provider_get_pages (ThunarxPropertyPageProvider *property_page_provider,
-                                          GList *files) {
+static GList*
+torrent_provider_get_pages (
+  ThunarxPropertyPageProvider *property_page_provider,
+  GList *files
+) {
   if (g_list_length (files) != 1) {
-    #ifndef NDEBUG
-      g_warning("MULTIPLE FILES SELECTED");
-    #endif
+    g_debug("Multiple files selected, not displaying torrent properties");
     return NULL;
   } else if (!thunarx_file_info_has_mime_type(files->data, "application/x-bittorrent")) {
-    #ifndef NDEBUG
-      g_warning("NOT A TORRENT FILE");
-    #endif
+    g_debug("Selection is not a torrent file");
     return NULL;
   }
-
-  #ifndef NDEBUG
-    g_message("TORRENT FILE OK !");
-  #endif
-
+  /* Create the torrent property page */
   GtkWidget* torrent_page = torrent_page_new(files->data);
-
-  #ifndef NDEBUG
-    g_message("Appending TorrentPage to GList");
-  #endif
-  return g_list_append(NULL, (gpointer) torrent_page);//torrent_page_new(files->data));
+  /* Return a linked-list containing the new torrent property page */
+  return g_list_append(NULL, (gpointer) torrent_page);
 }

@@ -48,10 +48,9 @@ struct _TorrentPage {
 #include "ui/files.c"
 
 
-
-
 /* implements the torrent_page_get_type() and torrent_page_register_type() functions */
 THUNARX_DEFINE_TYPE(TorrentPage, torrent_page, THUNARX_TYPE_PROPERTY_PAGE);
+
 
 static void torrent_page_class_init (TorrentPageClass *klass) {
   GObjectClass *gobject_class;
@@ -128,7 +127,6 @@ static void torrent_page_get_property (GObject *object, guint prop_id,
 }
 
 
-
 static void torrent_page_set_property (GObject *object, guint prop_id,
                                        const GValue *value, GParamSpec *pspec) {
 
@@ -143,7 +141,6 @@ static void torrent_page_set_property (GObject *object, guint prop_id,
       break;
   }
 }
-
 
 
 GtkWidget* torrent_page_new (ThunarxFileInfo *file) {
@@ -196,7 +193,6 @@ void torrent_page_set_file (TorrentPage *torrent_page, ThunarxFileInfo *file) {
 }
 
 
-
 /* File changed */
 static void torrent_page_file_changed(ThunarxFileInfo *file, gpointer user_data) {
 
@@ -204,7 +200,7 @@ static void torrent_page_file_changed(ThunarxFileInfo *file, gpointer user_data)
 
 static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo *info) {
   g_debug("Updating info");
-  if (info != NULL) {
+  if (G_LIKELY(info != NULL)) {
     g_debug("Torrent: %s", info->name);
     torrent_page_set_title(torrent_page, info->name);
     torrent_page_set_trackers(torrent_page, info->trackerc, info->trackerv);

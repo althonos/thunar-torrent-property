@@ -19,8 +19,6 @@
 
 
 static GtkWidget* torrent_page_new_trackers_view(TorrentPage* page) {
-
-
   GtkCellRenderer* renderer = gtk_cell_renderer_text_new();
   GtkWidget* window = gtk_scrolled_window_new(NULL, NULL);
   GtkListStore* store = gtk_list_store_new(1, G_TYPE_STRING);
@@ -45,9 +43,7 @@ static void torrent_page_set_trackers(TorrentPage* page, int size, char** tracke
 
   GtkTreeIter iter;
   for (int i=0; i < size; i++) {
-    #ifndef NDEBUG
-      g_message(trackers[i]);
-    #endif
+    g_debug("Tracker: %s", trackers[i]);
     gtk_list_store_append(GTK_LIST_STORE(new_list_store), &iter);
     gtk_list_store_set(GTK_LIST_STORE(new_list_store), &iter, 0, trackers[i], -1);
   }

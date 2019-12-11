@@ -38,8 +38,6 @@
 #include "torrent-info.h"
 #include "../utils/fs.h"
 
-
-// FIXME: DEBUG
 #include <gtk/gtk.h>
 
 

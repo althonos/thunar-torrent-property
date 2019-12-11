@@ -19,6 +19,8 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <gdk/gdk.h>
+
 #include "fs.h"
 
 

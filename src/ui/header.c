@@ -19,9 +19,7 @@
 
 
 static void torrent_page_set_title(TorrentPage* page, char* title) {
-  #ifndef NDEBUG
-    g_message("Setting title: %s", title);
-  #endif
+  g_debug("Setting page title: %s", title);
   gtk_label_set_text(GTK_LABEL(page->title), title);
 }
 

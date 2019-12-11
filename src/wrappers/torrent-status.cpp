@@ -71,7 +71,7 @@ extern TorrentStatus* torrent_status_from_torrent_file(const char* filename) {
 
     /* Get the torrent handle */
     libtorrent::torrent_handle handle = session.add_torrent(params);
-    if (ec) {
+    if (G_UNLIKELY(ec)) {
         g_error("%s", ec.message().c_str());
         return NULL;
     }
