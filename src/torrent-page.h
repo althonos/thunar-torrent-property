@@ -6,26 +6,46 @@
 
 G_BEGIN_DECLS;
 
-/* Declare the final type */
-#define TORRENT_TYPE_PAGE (torrent_page_get_type())
-G_DECLARE_FINAL_TYPE(TorrentPage, torrent_page, TORRENT, PAGE, ThunarxPropertyPage);
+/** Declare the final type
+ *
+ * We cannot use `G_DECLARE_FINAL_TYPE` as Thunarx does not provide `autoptr`
+ * cleanup functions; instead, we implement the equivalent code manually,
+ * without `autoptr` cleanup chaining support.
+ */
+typedef struct _TorrentPage TorrentPage;
+typedef struct _TorrentPageClass TorrentPageClass;
+
+#define TORRENT_TYPE_PAGE            (torrent_page_get_type())
+#define TORRENT_PAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TORRENT_TYPE_PAGE, TorrentPage))
+#define TORRENT_PAGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), TORRENT_TYPE_PAGE, TorrentPageClass))
+#define TORRENT_IS_PAGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TORRENT_TYPE_PAGE))
+#define TORRENT_IS_PAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TORRENT_TYPE_PAGE))
+
+struct _TorrentPageClass {
+  ThunarxPropertyPageClass parent_class;
+};
 
 /* Declare methods */
-extern GtkWidget *torrent_page_new(ThunarxFileInfo *file) G_GNUC_INTERNAL G_GNUC_MALLOC;
-extern ThunarxFileInfo *torrent_page_get_file(TorrentPage *torrent_page) G_GNUC_INTERNAL;
-extern void torrent_page_set_file(TorrentPage *torrent_page, ThunarxFileInfo *file) G_GNUC_INTERNAL;
-extern void torrent_page_register_type(ThunarxProviderPlugin *plugin);
-extern GType torrent_page_get_type();
+       void                torrent_page_register_type        (ThunarxProviderPlugin *plugin);
+       GType               torrent_page_get_type             (void);
 
-
-static void torrent_page_finalize(GObject *object);
-static void torrent_page_file_changed(ThunarxFileInfo *file, gpointer user_data);
-static void torrent_page_get_property(GObject *object, guint prop_id,
-                                      GValue *value, GParamSpec *pspec);
-static void torrent_page_set_property(GObject *object, guint prop_id,
-                                      const GValue *value, GParamSpec *pspec);
-static void torrent_page_update_info(TorrentPage *torrent_page, TorrentInfo* info);
+       GtkWidget          *torrent_page_new                  (ThunarxFileInfo *file) G_GNUC_INTERNAL G_GNUC_MALLOC;
+       ThunarxFileInfo    *torrent_page_get_file             (TorrentPage *torrent_page) G_GNUC_INTERNAL;
+       void                torrent_page_set_file             (TorrentPage *torrent_page,
+                                                              ThunarxFileInfo *file) G_GNUC_INTERNAL;
+static void                torrent_page_finalize             (GObject *object);
+static void                torrent_page_file_changed         (ThunarxFileInfo *file, gpointer user_data);
+static void                torrent_page_get_property         (GObject *object,
+                                                              guint prop_id,
+                                                              GValue *value,
+                                                              GParamSpec *pspec);
+static void                torrent_page_set_property         (GObject *object,
+                                                              guint prop_id,
+                                                              const GValue *value,
+                                                              GParamSpec *pspec);
+static void                torrent_page_update_info          (TorrentPage *torrent_page,
+                                                              TorrentInfo* info);
 
 G_END_DECLS;
 
-#endif /* !__torrent_page_H__ */
+#endif
