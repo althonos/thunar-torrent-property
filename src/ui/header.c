@@ -44,6 +44,7 @@ static void torrent_page_update_torrent_status(gpointer args) {
   TorrentStatus* status = torrent_status_from_thunarx_file_info(THUNARX_FILE_INFO(info));
   torrent_page_set_seeders_value(TORRENT_PAGE(page), status->seeders);
   torrent_page_set_leechers_value(TORRENT_PAGE(page), status->leechers);
+  free(status);
 
   #ifndef NDEBUG
     g_message("Seeders: %i", status->seeders);
