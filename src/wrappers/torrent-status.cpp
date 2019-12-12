@@ -87,6 +87,7 @@ extern TorrentStatus* torrent_status_from_torrent_file(const char* filename) {
     std::vector<libtorrent::alert*> alerts;
     do {
         while(gtk_events_pending()) gtk_main_iteration();
+        usleep(200000);
         session.pop_alerts(&alerts);
         for (auto* alert: alerts) {
             tpf = libtorrent::alert_cast<libtorrent::scrape_failed_alert>(alert);
