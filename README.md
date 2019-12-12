@@ -2,8 +2,10 @@
 
 *A small thunar extension displaying the metadata in a torrent file.*
 
-[![build status](https://gitlab.com/althonos/thunar-torrent-property/badges/master/build.svg)](https://gitlab.com/althonos/thunar-torrent-property/commits/master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9172fcaad5724418b72ace8b31ba5874)](https://www.codacy.com/app/althonos/thunar-torrent-property?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=althonos/thunar-torrent-property&amp;utm_campaign=Badge_Grade)
+[![GitLabCI](https://img.shields.io/gitlab/pipeline/althonos/thunar-torrent-property?logo=GitLab&style=flat-square&maxAge=3600)](https://gitlab.com/althonos/thunar-torrent-property/commits/master)
+[![License](https://img.shields.io/badge/license-GPLv3-blue.svg?logo=gnu&style=flat-square&maxAge=2678400)](https://choosealicense.com/licenses/gpl-3.0/)
+[![Source](https://img.shields.io/badge/source-GitHub-303030.svg?logo=github&maxAge=2678400&style=flat-square)](https://github.com/althonos/thunar-torrent-property/)
+[![Sanity](https://img.shields.io/codacy/grade/9172fcaad5724418b72ace8b31ba5874?logo=codacy&style=flat-square)](https://www.codacy.com/app/althonos/thunar-torrent-property)
 
 ## Features
 
@@ -106,4 +108,4 @@ Both commands will install a single file, `thunar-torrent-property.so`,
 in the `extensions` directory of **Thunar** (you can check where that
 directory is running `pkg-config --variable=extensionsdir thunarx-X`,
 most of the time it will be `/usr/lib/thunarx-X` or `/lib/thunarx-X`)
-(where `X` is either `2` or `3` depending on your library version).
+where `X` is either `2` or `3` depending on your library version.
