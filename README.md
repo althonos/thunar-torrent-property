@@ -51,6 +51,13 @@
 pacman -S base-devel cmake libtorrent-rasterbar thunar gtk2 boost
 ```
 
+###### Gentoo
+
+```
+eselect repository enable linxon && emaint sync --repo linxon
+emerge -av xfce-extra/thunar-torrent-property
+```
+
 ###### Ubuntu **>= 16.10 (yakkety)**
 
 ```
