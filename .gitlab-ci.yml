@@ -30,6 +30,7 @@ stages:
 build:archlinux-gcc:
   image: library/archlinux
   before_script:
+    - $PACMAN_INSTALL archlinux-keyring
     - $PACMAN_INSTALL base-devel cmake libtorrent-rasterbar thunar gtk2 boost
   <<: *build
 
