@@ -66,8 +66,8 @@ extern TorrentStatus* torrent_status_from_torrent_file(const char* filename) {
 
     /* Prepare adding the torrent to the session */
     libtorrent::add_torrent_params params;
-    params.ti = boost::make_shared<libtorrent::torrent_info>(std::string(filename));
-    params.flags = libtorrent::add_torrent_params::flags_t::flag_paused;
+    params.ti = std::make_shared<libtorrent::torrent_info>(std::string(filename));
+    params.flags = libtorrent::torrent_flags::paused;
 
     /* Get the torrent handle */
     libtorrent::torrent_handle handle = session.add_torrent(params);
