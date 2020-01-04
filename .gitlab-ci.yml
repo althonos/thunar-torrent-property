@@ -30,7 +30,7 @@ stages:
 build:archlinux-gcc:
   image: library/archlinux
   before_script:
-    - $PACMAN_INSTALL base-devel cmake libtorrent-rasterbar thunar gtk2 boost
+    - $PACMAN_INSTALL base-devel cmake libtorrent-rasterbar thunar gtk2
   <<: *build
 
 
@@ -41,7 +41,7 @@ build:archlinux-gcc:
 build:fedora-gcc:
   image: library/fedora
   before_script:
-    - $DNF_INSTALL gtk+-devel boost-devel cmake gcc Thunar-devel
+    - $DNF_INSTALL gtk+-devel cmake gcc Thunar-devel
       rb_libtorrent-devel make gcc-c++
   <<: *build
 
@@ -55,8 +55,7 @@ build:ubuntu-bionic-gcc:
   before_script:
     - apt-get update -qq
     - $APTGET_INSTALL cmake libthunarx-2-dev libgtk2.0-dev
-      libboost-filesystem-dev libboost-system-dev libglib2.0-dev
-      build-essential libssl-dev libtorrent-rasterbar-dev
+      libglib2.0-dev build-essential libssl-dev libtorrent-rasterbar-dev
   <<: *build
 
 build:ubuntu-focal-gcc:
@@ -64,6 +63,5 @@ build:ubuntu-focal-gcc:
   before_script:
     - apt-get update -qq
     - $APTGET_INSTALL cmake libthunarx-3-dev libgtk2.0-dev
-      libboost-filesystem-dev libboost-system-dev libglib2.0-dev
-      build-essential libssl-dev libtorrent-rasterbar-dev
+      libglib2.0-dev build-essential libssl-dev libtorrent-rasterbar-dev
   <<: *build
