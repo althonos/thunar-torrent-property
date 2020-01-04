@@ -19,7 +19,6 @@
 
 #include <unistd.h>
 #include <thunarx/thunarx.h>
-#include <boost/shared_ptr.hpp>
 #include <libtorrent/session.hpp>
 #include <libtorrent/alert.hpp>
 #include <libtorrent/alert_types.hpp>
@@ -34,7 +33,9 @@
 
 #include "torrent-status.h"
 
-#include <iostream> // FIXME: DEBUG
+#if TORRENT_ABI_VERSION == 1
+#include <boost/shared_ptr.hpp>
+#endif
 
 
 extern TorrentStatus* torrent_status_new() {
@@ -66,8 +67,13 @@ extern TorrentStatus* torrent_status_from_torrent_file(const char* filename) {
 
     /* Prepare adding the torrent to the session */
     libtorrent::add_torrent_params params;
+#if TORRENT_ABI_VERSION == 1
     params.ti = std::make_shared<libtorrent::torrent_info>(std::string(filename));
     params.flags = libtorrent::torrent_flags::paused;
+#else
+    params.ti = boost::make_shared<libtorrent::torrent_info>(std::string(filename));
+    params.flags = libtorrent::add_torrent_params::flags_t::flag_paused;
+#endif
 
     /* Get the torrent handle */
     libtorrent::torrent_handle handle = session.add_torrent(params);

@@ -40,6 +40,7 @@
 * `gtk+-2.0`
 * `thunarx` (installed with [XFCE / Thunar](http://docs.xfce.org/xfce/thunar/start))
 * `libtorrent` (the [rasterbar](http://www.libtorrent.org/) version), **>= 1.1.0**
+* `Boost/system` (required to interface with `libtorrent`)
 
 
 ### Installing dependencies (tested distributions)
@@ -47,26 +48,28 @@
 ###### ArchLinux
 
 ```
-pacman -S base-devel cmake libtorrent-rasterbar thunar gtk2
+pacman -S base-devel cmake libtorrent-rasterbar thunar gtk2 boost
 ```
 
 ###### Ubuntu **>= 16.10 (yakkety)**
 
 ```
 apt install cmake libthunarx-2-dev libgtk2.0-dev \
-    libglib2.0-dev build-essential libssl-dev libtorrent-rasterbar-dev
+    libboost-filesystem-dev libboost-system-dev libglib2.0-dev \
+    build-essential libssl-dev libtorrent-rasterbar-dev
 ```
 
 ###### Ubuntu **>= 19.04 (disco)**
 ```
 apt install cmake libthunarx-3-dev libgtk2.0-dev \
-    libglib2.0-dev build-essential libssl-dev libtorrent-rasterbar-dev
+    libboost-filesystem-dev libboost-system-dev libglib2.0-dev \
+    build-essential libssl-dev libtorrent-rasterbar-dev
 ```
 
 ###### Fedora
 
 ```
-dnf install gtk+-devel cmake gcc Thunar-devel \
+dnf install gtk+-devel boost-devel cmake gcc Thunar-devel \
     rb_libtorrent-devel make gcc-c++
 ```
 

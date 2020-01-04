@@ -12,7 +12,7 @@ endif()
 
 # Find required library headers & files
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(LIBTORRENT_RB REQUIRED libtorrent-rasterbar>=1.2)
+pkg_check_modules(LIBTORRENT_RB REQUIRED libtorrent-rasterbar>=1.1)
 pkg_check_modules(GLIB REQUIRED glib-2.0>=2.44)
 
 # Find the target thunarx version
@@ -45,12 +45,20 @@ link_directories(${GLIB_LIBRARY_DIRS})
 link_directories(${THUNARX_LIBRARY_DIRS})
 link_directories(${LIBTORRENT_RB_LIBRARY_DIRS})
 
-
 # Add other flags to the compiler
 add_definitions(${GTK_CFLAGS_OTHER})
 add_definitions(${GLIB_CFLAGS_OTHER})
 add_definitions(${THUNARX_CFLAGS_OTHER})
+add_definitions(-DLIBTORRENT_RB_VERSION=${LIBTORRENT_RB_VERSION})
 add_definitions(${LIBTORRENT_RB_CFLAGS_OTHER})
+
+# Link against Boost if not using libtorrent 1.2
+if(LIBTORRENT_RB_VERSION VERSION_LESS "1.2")
+    find_package(Boost 1.49 REQUIRED COMPONENTS system filesystem)
+    include_directories(${Boost_INCLUDE_DIRS})
+    link_directories(${Boost_LIBRARY_DIRS})
+    add_definitions(${Boost_CFLAGS_OTHER})
+endif()
 
 # Find source files
 file(GLOB SOURCES src/*.c src/utils/*.c)
@@ -58,7 +66,7 @@ file(GLOB CXX_SOURCES src/wrappers/*.cpp)
 
 # Add a shared library
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${CXX_SOURCES})
-target_link_libraries(${PROJECT_NAME} ${LIBTORRENT_RB_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${LIBTORRENT_RB_LIBRARIES})
 
 # Add C/C++ features constraints
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_range_for)
