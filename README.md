@@ -1,4 +1,4 @@
-# thunar-torrent-property
+# `thunar-torrent-property` [![Star me](https://img.shields.io/github/stars/althonos/thunar-torrent-property.svg?style=social&label=Star&maxAge=3600)](https://github.com/althonos/thunar-torrent-property/stargazers)
 
 *A small thunar extension displaying the metadata in a torrent file.*
 
